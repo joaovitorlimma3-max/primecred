@@ -137,26 +137,64 @@ header {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        gap: 20px;
-        align-items: flex-start;
+    .container {
+        padding: 30px 20px;
     }
 
-    .btn-back {
-        align-self: flex-end;
+    header {
+        margin-bottom: 40px;
+    }
+
+    .logo-brand img {
+        height: 80px;
+    }
+
+    .logo-brand span {
+        font-size: 1.4rem;
+        letter-spacing: 2px;
+    }
+
+    .hero {
+        text-align: center;
+        margin-bottom: 30px;
     }
 
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.8rem;
+        line-height: 1.2;
+    }
+
+    .hero p {
+        font-size: 0.9rem;
+        text-align: center;
     }
 
     .portfolio-block {
         flex-direction: column;
-        gap: 20px;
+        gap: 25px;
+        text-align: center;
     }
 
     .block-image img {
-        height: 200px;
+        height: 220px;
+    }
+
+    .block-content h2 {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+    }
+
+    .block-content p {
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .footer-text {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    .separator {
+        margin: 25px 0;
     }
 }
