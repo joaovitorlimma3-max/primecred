@@ -1,79 +1,448 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PrimeCred | Portfólio de Alocação de Capital</title>
-    <link rel="stylesheet" href="styles/main.css">
+    <title>PrimeCred - Soluções de Crédito</title>
+    <meta name="description" content="Encontre a solução de crédito mais adequada para o seu perfil. Simulação rápida, segura e transparente.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1533044175037797');
+    fbq('track', 'PageView');
+    </script>
+
+    <!-- End Meta Pixel Code -->
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo-brand">
-                <img src="assets/pc-symbol.png" alt="PrimeCred Symbol">
-                <span>PRIMECRED</span>
-            </div>
-        </header>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1533044175037797&ev=PageView&noscript=1" /></noscript>
 
+    <main>
+        <!-- Hero Section -->
         <section class="hero">
-            <h1>PORTFÓLIO DE ALOCAÇÃO DE CAPITAL</h1>
-            <p>
-                A PrimeCred é uma empresa especializada em alocação estratégica de capital, com foco em operações estruturadas e geração consistente de valor. Atuamos de forma disciplinada, direcionando recursos para ativos com alto potencial de retorno, sempre com base em critérios rigorosos de análise, gestão de risco e liquidez.
-            </p>
-        </section>
-
-        <div class="separator"></div>
-
-        <section class="portfolio-block">
-            <div class="block-image">
-                <img src="assets/retail.png" alt="Expansão Comercial e Capital de Giro">
-            </div>
-            <div class="block-content">
-                <h2>Expansão Comercial e Capital de Giro</h2>
-                <p>
-                    Direcionamos investimentos para operações de varejo e logística, com ênfase em capital de giro, recomposição de estoque e crescimento operacional. O objetivo é impulsionar negócios com alto potencial de expansão e geração de receita sustentável.
-                </p>
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">Simulação Segura e Personalizada</span>
+                    <h1>Encontre a solução de crédito mais adequada para o seu perfil.</h1>
+                    <p>Realizamos uma análise personalizada para oferecer opções compatíveis com a sua realidade financeira, de forma simples e segura.</p>
+                    <a href="#simulador" class="btn btn-primary btn-large">Fazer Simulação <i class="ph ph-arrow-right"></i></a>
+                </div>
             </div>
         </section>
 
-        <div class="separator"></div>
+        <!-- Análise Personalizada Section -->
+        <section class="cta-analysis">
+            <div class="container">
+                <div class="cta-analysis-header">
+                    <h2>Solicite uma análise personalizada</h2>
+                    <p>Preencha algumas informações e nossa equipe fará uma análise para apresentar as opções disponíveis.</p>
+                </div>
 
-        <section class="portfolio-block">
-            <div class="block-image">
-                <img src="assets/agro.png" alt="Ativos Reais e Commodities">
-            </div>
-            <div class="block-content">
-                <h2>Ativos Reais e Commodities</h2>
-                <p>
-                    Alocamos capital em operações estratégicas no agronegócio e na cadeia de commodities, com foco em ativos reais de alta liquidez e demanda consolidada. Nossa atuação é estruturada em parceria com operadores experientes, priorizando previsibilidade de fluxo, eficiência operacional e geração recorrente de resultados.
-                </p>
+                <div class="cta-cards-grid">
+                    <div class="cta-card">
+                        <div class="cta-card-icon">
+                            <i class="ph ph-file-text"></i>
+                        </div>
+                        <h4>Envio rápido</h4>
+                        <p>Preencha sua solicitação em <strong>poucos minutos</strong>.</p>
+                    </div>
+                    <div class="cta-card">
+                        <div class="cta-card-icon">
+                            <i class="ph ph-chart-line-up"></i>
+                        </div>
+                        <h4>Análise personalizada</h4>
+                        <p>Cada solicitação é avaliada <strong>individualmente</strong> para identificar as opções disponíveis.</p>
+                    </div>
+                    <div class="cta-card">
+                        <div class="cta-card-icon">
+                            <i class="ph ph-headset"></i>
+                        </div>
+                        <h4>Atendimento especializado</h4>
+                        <p>Nossa equipe entra em contato para dar <strong>continuidade ao atendimento</strong>.</p>
+                    </div>
+                </div>
+
+                <div class="cta-analysis-action">
+                    <a href="#simulador" class="btn btn-primary btn-large">Iniciar Pré-Solicitação <i class="ph ph-arrow-right"></i></a>
+                </div>
+
+                <div class="cta-disclaimer">
+                    <div class="cta-disclaimer-inner">
+                        <i class="ph ph-info"></i>
+                        <div>
+                            <strong>Importante</strong>
+                            <p>O envio da solicitação não representa aprovação ou contratação. Todas as solicitações passam por análise antes de qualquer proposta.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="separator"></div>
-
-        <section class="portfolio-block">
-            <div class="block-image">
-                <img src="assets/finance.png" alt="Estruturação Financeira e Crédito">
-            </div>
-            <div class="block-content">
-                <h2>Estruturação Financeira e Crédito</h2>
-                <p>
-                    Participamos de operações estruturadas com foco em crédito e antecipação de ativos, explorando oportunidades com assimetria positiva de retorno. A atuação é baseada em análise criteriosa e parcerias estratégicas, garantindo escala e eficiência na alocação.
-                </p>
+        <section id="como-funciona" class="how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Como Funciona</h2>
+                    <p>Um processo simples, transparente e focado em você.</p>
+                </div>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h3>Informe seus dados</h3>
+                        <p>Preencha nosso formulário rápido para que possamos entender o seu momento financeiro.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h3>Análise Especializada</h3>
+                        <p>Nossa equipe realiza uma análise criteriosa e individualizada do seu perfil.</p>
+                    </div>
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h3>Retorno Personalizado</h3>
+                        <p>Entramos em contato caso exista uma opção compatível com o seu perfil.</p>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <div class="separator"></div>
+        <!-- Benefits Section -->
+        <section id="beneficios" class="benefits">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Nossos Diferenciais</h2>
+                    <p>Por que escolher a PrimeCred para a sua simulação de crédito?</p>
+                </div>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <div class="icon-wrapper"><i class="ph ph-lightning"></i></div>
+                        <h4>Agilidade na Análise</h4>
+                        <p>Após o envio de toda a documentação solicitada no checklist, nossa equipe realiza a análise inicial da ficha, que normalmente ocorre entre 2 e 3 horas, durante o horário de atendimento.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="icon-wrapper"><i class="ph ph-handshake"></i></div>
+                        <h4>Atendimento Humanizado</h4>
+                        <p>Você será atendido por uma equipe preparada para esclarecer dúvidas, acompanhar sua solicitação e oferecer um atendimento próximo, transparente e personalizado em todas as etapas.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="icon-wrapper"><i class="ph ph-chat-teardrop-text"></i></div>
+                        <h4>Respostas Rápidas</h4>
+                        <p>Priorizamos um atendimento ágil para que você receba retorno o mais breve possível durante todo o processo de análise.</p>
+                    </div>
+                    <div class="benefit-item">
+                        <div class="icon-wrapper"><i class="ph ph-device-mobile-speaker"></i></div>
+                        <h4>Suporte Estendido</h4>
+                        <p>Nossa equipe permanece disponível para acompanhar sua solicitação e prestar suporte sempre que necessário, garantindo uma comunicação rápida e eficiente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <footer class="footer-text">
-            <p>
-                Nosso portfólio é construído com base em disciplina, gestão ativa e visão estratégica, priorizando segurança, liquidez e crescimento consistente ao longo do tempo.
-            </p>
-        </footer>
-    </div>
+        <!-- Security Section -->
+        <section class="security">
+            <div class="container">
+                <div class="security-card">
+                    <div class="security-content">
+                        <h2>Sua segurança em primeiro lugar</h2>
+                        <p>Nosso ambiente é totalmente seguro. Seus dados são protegidos e tratados com o mais alto nível de privacidade e responsabilidade.</p>
+                        <ul class="security-list">
+                            <li><i class="ph ph-shield-check"></i> Ambiente 100% Seguro</li>
+                            <li><i class="ph ph-lock-key"></i> Dados Criptografados e Protegidos</li>
+                            <li><i class="ph ph-eye-slash"></i> Privacidade Garantida</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Perguntas Frequentes</h2>
+                    <p>Tire suas principais dúvidas sobre nosso processo.</p>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header">Como funciona a solicitação de uma simulação? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Após preencher o formulário, nossa equipe analisa as informações enviadas e entra em contato para orientar sobre as opções disponíveis, caso exista compatibilidade com o perfil informado.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">O preenchimento da simulação possui algum custo? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Não. A solicitação de simulação é totalmente gratuita e não gera qualquer compromisso de contratação.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Em quanto tempo recebo um retorno? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Buscamos analisar todas as solicitações o mais breve possível, respeitando nosso horário de atendimento e a ordem de recebimento.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Meus dados estão seguros? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Sim. Todas as informações enviadas são tratadas com confidencialidade e utilizadas exclusivamente para dar continuidade ao atendimento solicitado.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Quem pode solicitar uma simulação? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>A simulação está disponível para pessoas que exerçam atividade profissional, possuam empreendimento ou outra fonte de renda. Cada solicitação é analisada de forma individual, levando em consideração o perfil apresentado e o valor solicitado, para que possamos oferecer um atendimento responsável e adequado.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">A simulação garante aprovação? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Não. O envio da solicitação representa apenas o início da análise. Cada caso é avaliado individualmente antes de qualquer possibilidade de prosseguimento.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">O atendimento é realizado pelo WhatsApp? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Sim. Após o preenchimento da simulação, o atendimento continua pelo WhatsApp, proporcionando uma comunicação mais rápida, prática e personalizada.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Preciso enviar documentos imediatamente? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Não. Caso seja necessário apresentar alguma documentação, nossa equipe informará quais documentos serão solicitados durante as próximas etapas do atendimento.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Ainda tenho dúvidas. Como posso falar com vocês? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content">
+                            <p>Caso tenha qualquer dúvida, basta concluir a simulação e iniciar o atendimento pelo WhatsApp. Nossa equipe estará à disposição para orientar você durante todo o processo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-step Form Section -->
+        <section id="simulador" class="simulator">
+            <div class="container">
+                <div class="form-wrapper">
+                    <div class="form-header">
+                        <h2>Pré-Solicitação de Crédito</h2>
+                        <p>Preencha suas informações de forma segura para análise.</p>
+                        <div class="progress-steps">
+                            <div class="pstep active" data-target="1"><span>1</span> Valor</div>
+                            <div class="pstep" data-target="2"><span>2</span> Renda</div>
+                            <div class="pstep" data-target="3"><span>3</span> Perfil</div>
+                            <div class="pstep" data-target="4"><span>4</span> Contato</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                    </div>
+                    
+                    <form id="simulation-form">
+                        <!-- Step 1 — Valor desejado -->
+                        <div class="form-step active" data-step="1">
+                            <h3>Quanto você deseja solicitar?</h3>
+                            <div class="input-group">
+                                <label for="valor">Valor desejado (R$)</label>
+                                <input type="text" id="valor" name="valor" placeholder="Ex: 1.500,00" required>
+                            </div>
+                            <p class="form-hint"><i class="ph ph-info"></i> A aprovação depende da análise do seu perfil financeiro.</p>
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-primary btn-next btn-full">Continuar</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 — Perfil de renda -->
+                        <div class="form-step" data-step="2">
+                            <h3>Perfil de Renda</h3>
+
+                            <div class="field-block">
+                                <label class="field-label">Tipo de renda</label>
+                                <div class="chip-group" data-name="tipo_renda">
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="CLT" required><span>CLT</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="Autônomo"><span>Autônomo</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="MEI"><span>MEI</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="Aposentado"><span>Aposentado</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="Benefício"><span>Benefício</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_renda" value="Sem renda fixa"><span>Sem renda fixa</span></label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="renda_mensal">Renda mensal (R$)</label>
+                                <input type="text" id="renda_mensal" name="renda_mensal" placeholder="Ex: 2.500,00" required>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Tempo de renda</label>
+                                <div class="chip-group" data-name="tempo_renda">
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="Menos de 3 meses" required><span>Menos de 3 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="3 a 6 meses"><span>3 a 6 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="6 a 12 meses"><span>6 a 12 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="Mais de 1 ano"><span>Mais de 1 ano</span></label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="profissao">Profissão / Atividade atual</label>
+                                <input type="text" id="profissao" name="profissao" placeholder="Ex: Vendedor, Motorista, Cabeleireiro..." required>
+                            </div>
+
+                            <div class="form-actions row">
+                                <button type="button" class="btn btn-outline btn-prev">Voltar</button>
+                                <button type="button" class="btn btn-primary btn-next">Continuar</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 — Perfil bancário -->
+                        <div class="form-step" data-step="3">
+                            <h3>Perfil Bancário</h3>
+
+                            <div class="field-block">
+                                <label class="field-label">Possui extrato dos últimos 90 dias?</label>
+                                <div class="chip-group" data-name="extrato">
+                                    <label class="chip"><input type="radio" name="extrato" value="Sim" required><span>Sim</span></label>
+                                    <label class="chip"><input type="radio" name="extrato" value="Não"><span>Não</span></label>
+                                </div>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Nome negativado?</label>
+                                <div class="chip-group" data-name="negativado">
+                                    <label class="chip"><input type="radio" name="negativado" value="Sim" required><span>Sim</span></label>
+                                    <label class="chip"><input type="radio" name="negativado" value="Não"><span>Não</span></label>
+                                    <label class="chip"><input type="radio" name="negativado" value="Não sei"><span>Não sei</span></label>
+                                </div>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Recebe por PIX frequentemente?</label>
+                                <div class="chip-group" data-name="pix">
+                                    <label class="chip"><input type="radio" name="pix" value="Sim" required><span>Sim</span></label>
+                                    <label class="chip"><input type="radio" name="pix" value="Não"><span>Não</span></label>
+                                </div>
+                            </div>
+
+                            <div class="form-actions row">
+                                <button type="button" class="btn btn-outline btn-prev">Voltar</button>
+                                <button type="button" class="btn btn-primary btn-next">Continuar</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4 — Contato -->
+                        <div class="form-step" data-step="4">
+                            <h3>Dados para Contato</h3>
+
+                            <div class="input-group">
+                                <label for="nome">Nome completo</label>
+                                <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="cpf">CPF</label>
+                                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="whatsapp">WhatsApp</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="cep">CEP</label>
+                                <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="cidade">Cidade</label>
+                                <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="bairro">Bairro</label>
+                                <input type="text" id="bairro" name="bairro" placeholder="Ex: Centro" required>
+                            </div>
+                            <div class="input-group">
+                                <label for="uf">UF (Estado)</label>
+                                <input type="text" id="uf" name="uf" placeholder="Ex: SP" maxlength="2" required>
+                            </div>
+
+                            <div class="form-actions row">
+                                <button type="button" class="btn btn-outline btn-prev">Voltar</button>
+                                <button type="submit" class="btn btn-primary btn-submit">Enviar Pré-Solicitação</button>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="form-loading" id="loading-step" style="display: none;">
+                            <div class="spinner"></div>
+                            <h3>Estamos preparando sua solicitação...</h3>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div class="form-success" id="success-step" style="display: none;">
+                            <div class="success-icon"><i class="ph ph-check-circle"></i></div>
+                            <h3>Pré-solicitação recebida!</h3>
+                            <p>Entraremos em contato em breve pelo WhatsApp para dar andamento à sua solicitação.</p>
+                        </div>
+                    </form>
+
+                    <!-- Trust Seals -->
+                    <div class="trust-seals">
+                        <div class="seal"><i class="ph ph-lock-key"></i> Seus dados são tratados com confidencialidade.</div>
+                        <div class="seal"><i class="ph ph-headset"></i> Atendimento realizado por especialistas.</div>
+                        <div class="seal"><i class="ph ph-clock"></i> Retorno em horário comercial.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo footer-logo">
+                    <img src="logo.png" alt="PrimeCred - Crédito para Realizar" class="logo-img footer-logo-img">
+                </a>
+                <p>Soluções de crédito responsáveis para o seu momento financeiro.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#beneficios">Benefícios</a></li>
+                    <li><a href="#faq">Perguntas Frequentes</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h4>Atendimento</h4>
+                <p>Segunda a Sexta<br>Horário Comercial</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 PrimeCred. Todos os direitos reservados.</p>
+                <p class="disclaimer">Nossa empresa não cobra taxas antecipadas para a aprovação de crédito. Sujeito à análise de crédito e disponibilidade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/5521959433111?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida%20sobre%20o%20servi%C3%A7o%20da%20PrimeCred." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Fale conosco pelo WhatsApp">
+        <i class="ph-fill ph-whatsapp-logo"></i>
+        <span class="whatsapp-float-tooltip">Tire suas dúvidas</span>
+    </a>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
