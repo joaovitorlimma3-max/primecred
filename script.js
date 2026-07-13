@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'apikey': 'sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
                     'Authorization': 'Bearer sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
                     'Content-Type': 'application/json',
-                    'Prefer': 'return=representation'
+                    'Prefer': 'return=minimal'
                 },
                 body: JSON.stringify({
                     nome: document.getElementById('nome').value.trim(),
