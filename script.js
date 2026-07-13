@@ -111,6 +111,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.classList.add('input-error');
                 appendError(input.closest('.input-group'), 'Este campo é obrigatório.');
             }
+            
+            if (input.id === 'cpf') {
+                const rawValue = input.value.replace(/\D/g, '');
+                if (rawValue.length > 0 && !validarCPF(rawValue)) {
+                    isValid = false;
+                    input.classList.add('input-error');
+                    const msgEl = document.getElementById('cpf-msg');
+                    if (msgEl) {
+                        msgEl.textContent = 'Informe um CPF válido para continuar.';
+                        msgEl.style.color = 'var(--danger)';
+                        msgEl.style.display = 'block';
+                    }
+                }
+            }
         });
 
         return isValid;
@@ -182,19 +196,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Prepara os dados
         const valorSolicitadoStr = document.getElementById('valor').value.replace(/\D/g, '');
-        const rendaMensalStr = document.getElementById('renda_mensal').value.replace(/\D/g, '');
-        
         const valor = valorSolicitadoStr ? parseInt(valorSolicitadoStr) / 100 : 0;
-        const renda = rendaMensalStr ? parseInt(rendaMensalStr) / 100 : 0;
+        const renda = 0;
 
-        const tipoRenda = getRadioValue('tipo_renda');
-        const tempoRenda = getRadioValue('tempo_renda');
-        const profissao = document.getElementById('profissao').value.trim();
-        const extrato = getRadioValue('extrato');
-        const negativado = getRadioValue('negativado');
-        const pix = getRadioValue('pix');
+        const finalidade = document.getElementById('finalidade').value.trim();
+        const tipo_contrato = getRadioValue('tipo_contrato');
+        
+        const renda_media = getRadioValue('renda_media');
+        const comprovante = getRadioValue('comprovante');
+        const tempo_renda = getRadioValue('tempo_renda');
+        
+        let statusComprovacao = comprovante;
+        if (comprovante === 'Não consigo comprovar') {
+            statusComprovacao = 'Comprovação de renda pendente';
+        }
 
-        const observacoes = `Tipo Renda: ${tipoRenda} | Tempo Renda: ${tempoRenda} | Profissão: ${profissao} | Extrato 90d: ${extrato} | Negativado: ${negativado} | PIX: ${pix}`;
+        const rua = document.getElementById('rua').value.trim();
+        const numero = document.getElementById('numero').value.trim();
+        const complemento = document.getElementById('complemento').value.trim();
+        const enderecoCompleto = `${rua}, ${numero} ${complemento ? '- ' + complemento : ''}`;
+
+        const observacoes = `Endereço: ${enderecoCompleto} | Finalidade: ${finalidade} | Tipo de contrato: ${tipo_contrato} | Renda Média: ${renda_media} | Comprovante: ${statusComprovacao} | Tempo: ${tempo_renda}`;
 
         try {
             // Usando a API REST exata que você forneceu
@@ -231,6 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingEl.style.display = 'none';
             successEl.style.display = 'block';
 
+            // Integração WhatsApp
+            const msg = buildWhatsAppMessage();
+            const wppUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`;
+            const wppBtn = document.getElementById('btn-whatsapp-redirect');
+            if(wppBtn) {
+                wppBtn.href = wppUrl;
+                wppBtn.style.display = 'inline-block';
+                setTimeout(() => {
+                    window.open(wppUrl, '_blank');
+                }, 2000);
+            }
+
         } catch (err) {
             console.error('Erro detalhado:', err);
             loadingEl.style.display = 'none';
@@ -245,17 +279,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     function buildWhatsAppMessage() {
         const valor       = document.getElementById('valor').value.trim();
-        const tipoRenda   = getRadioValue('tipo_renda');
-        const rendaMensal = document.getElementById('renda_mensal').value.trim();
-        const tempoRenda  = getRadioValue('tempo_renda');
-        const profissao   = document.getElementById('profissao').value.trim();
-        const extrato     = getRadioValue('extrato');
-        const negativado  = getRadioValue('negativado');
-        const pix         = getRadioValue('pix');
+        const finalidade  = document.getElementById('finalidade').value.trim();
+        const tipo_contrato = getRadioValue('tipo_contrato');
+        
+        const renda_media = getRadioValue('renda_media');
+        const comprovante = getRadioValue('comprovante');
+        const tempo_renda = getRadioValue('tempo_renda');
+        
+        let statusComprovacao = comprovante;
+        if (comprovante === 'Não consigo comprovar') {
+            statusComprovacao = 'Comprovação de renda pendente';
+        }
+
         const nome        = document.getElementById('nome').value.trim();
         const cpf         = document.getElementById('cpf').value.trim();
         const whatsapp    = document.getElementById('whatsapp').value.trim();
         const cep         = document.getElementById('cep').value.trim();
+        const rua         = document.getElementById('rua').value.trim();
+        const numero      = document.getElementById('numero').value.trim();
+        const complemento = document.getElementById('complemento').value.trim();
         const cidade      = document.getElementById('cidade').value.trim();
         const bairro      = document.getElementById('bairro').value.trim();
         const uf          = document.getElementById('uf').value.trim().toUpperCase();
@@ -268,28 +310,24 @@ document.addEventListener('DOMContentLoaded', () => {
             '💰 *Valor desejado:*',
             valor,
             '',
-            '── *Perfil de Renda* ──',
+            `🎯 *Finalidade:* ${finalidade}`,
+            `⏱️ *Tipo de contrato:* ${tipo_contrato}`,
             '',
-            `💼 *Tipo de renda:* ${tipoRenda}`,
-            `💵 *Renda mensal:* ${rendaMensal}`,
-            `🕐 *Tempo de renda:* ${tempoRenda}`,
-            `🔧 *Profissão:* ${profissao}`,
+            '── *Renda* ──',
             '',
-            '── *Perfil Bancário* ──',
+            `💵 *Renda média:* ${renda_media}`,
+            `🕒 *Tempo de renda:* ${tempo_renda}`,
+            `📄 *Comprovação:* ${statusComprovacao}`,
             '',
-            `📄 *Extrato 90 dias:* ${extrato}`,
-            `⚠️ *Nome negativado:* ${negativado}`,
-            `📲 *Recebe por PIX:* ${pix}`,
-            '',
-            '── *Contato* ──',
+            '── *Contato e Endereço* ──',
             '',
             `👤 *Nome:* ${nome}`,
             `🆔 *CPF:* ${cpf}`,
             `📱 *WhatsApp:* ${whatsapp}`,
-            `📍 *CEP:* ${cep}`,
+            `📍 *Endereço:* ${rua}, ${numero} ${complemento ? '- ' + complemento : ''}`,
             `🏘️ *Bairro:* ${bairro}`,
-            `🏙️ *Cidade:* ${cidade}`,
-            `🗺️ *UF:* ${uf}`,
+            `🏙️ *Cidade/UF:* ${cidade} - ${uf}`,
+            `📮 *CEP:* ${cep}`,
             '',
             'Aguardo o retorno. Obrigado!'
         ];
@@ -319,15 +357,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const valorInput = document.getElementById('valor');
     if (valorInput) applyCurrencyMask(valorInput);
 
-    const rendaInput = document.getElementById('renda_mensal');
-    if (rendaInput) applyCurrencyMask(rendaInput);
-
-    const whatsappInput = document.getElementById('whatsapp');
-    if (whatsappInput) {
-        whatsappInput.addEventListener('input', (e) => {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        });
+    // Validação de CPF
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/[^\d]+/g,'');
+        if(cpf == '') return false;
+        if (cpf.length != 11 || 
+            /^(\d)\1{10}$/.test(cpf))
+                return false;
+        var add = 0;
+        for (var i=0; i < 9; i ++)
+            add += parseInt(cpf.charAt(i)) * (10 - i);
+        var rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(9))) return false;
+        add = 0;
+        for (var i = 0; i < 10; i ++)
+            add += parseInt(cpf.charAt(i)) * (11 - i);
+        rev = 11 - (add % 11);
+        if (rev == 10 || rev == 11) rev = 0;
+        if (rev != parseInt(cpf.charAt(10))) return false;
+        return true;
     }
 
     const cpfInput = document.getElementById('cpf');
@@ -339,16 +388,82 @@ document.addEventListener('DOMContentLoaded', () => {
             value = value.replace(/(\d{3})(\d)/, '$1.$2');
             value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
             e.target.value = value;
+            
+            const msgEl = document.getElementById('cpf-msg');
+            msgEl.style.display = 'none';
+            cpfInput.classList.remove('input-error');
+        });
+
+        cpfInput.addEventListener('blur', (e) => {
+            const rawValue = e.target.value.replace(/\D/g, '');
+            const msgEl = document.getElementById('cpf-msg');
+            
+            if (rawValue.length === 0) return;
+
+            if (validarCPF(rawValue)) {
+                cpfInput.classList.remove('input-error');
+                msgEl.textContent = 'CPF validado.';
+                msgEl.style.color = '#059669'; // success color
+                msgEl.style.display = 'block';
+            } else {
+                cpfInput.classList.add('input-error');
+                msgEl.textContent = 'Informe um CPF válido para continuar.';
+                msgEl.style.color = 'var(--danger)';
+                msgEl.style.display = 'block';
+            }
+        });
+    }
+
+    const whatsappInput = document.getElementById('whatsapp');
+    if (whatsappInput) {
+        whatsappInput.addEventListener('input', (e) => {
+            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
+            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
         });
     }
 
     const cepInput = document.getElementById('cep');
     if (cepInput) {
-        cepInput.addEventListener('input', (e) => {
+        cepInput.addEventListener('input', async (e) => {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 8) value = value.slice(0, 8);
-            value = value.replace(/(\d{5})(\d)/, '$1-$2');
-            e.target.value = value;
+            e.target.value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            
+            if (value.length === 8) {
+                document.getElementById('cep-loading').style.display = 'inline-block';
+                document.getElementById('cep-error').style.display = 'none';
+                try {
+                    const res = await fetch(`https://viacep.com.br/ws/${value}/json/`);
+                    const data = await res.json();
+                    if (data.erro) {
+                        document.getElementById('cep-error').style.display = 'inline-block';
+                        document.getElementById('rua').value = '';
+                        document.getElementById('bairro').value = '';
+                        document.getElementById('cidade').value = '';
+                        document.getElementById('uf').value = '';
+                    } else {
+                        document.getElementById('rua').value = data.logradouro || '';
+                        document.getElementById('bairro').value = data.bairro || '';
+                        document.getElementById('cidade').value = data.localidade || '';
+                        document.getElementById('uf').value = data.uf || '';
+                        document.getElementById('numero').focus();
+                        
+                        // Limpa os erros desses campos se já estiverem preenchidos
+                        ['rua', 'bairro', 'cidade', 'uf'].forEach(id => {
+                            const el = document.getElementById(id);
+                            if (el && el.value) {
+                                el.classList.remove('input-error');
+                                const err = el.closest('.input-group').querySelector('.error-message');
+                                if (err) err.remove();
+                            }
+                        });
+                    }
+                } catch (err) {
+                    document.getElementById('cep-error').style.display = 'inline-block';
+                } finally {
+                    document.getElementById('cep-loading').style.display = 'none';
+                }
+            }
         });
     }
 

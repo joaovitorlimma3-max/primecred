@@ -40,7 +40,7 @@
                     <span class="hero-badge">Simulação Segura e Personalizada</span>
                     <h1>Encontre a solução de crédito mais adequada para o seu perfil.</h1>
                     <p>Realizamos uma análise personalizada para oferecer opções compatíveis com a sua realidade financeira, de forma simples e segura.</p>
-                    <a href="#simulador" class="btn btn-primary btn-large">Fazer Simulação <i class="ph ph-arrow-right"></i></a>
+                    <a href="#simulador" class="btn btn-primary btn-large">Fazer uma pré-análise agora <i class="ph ph-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -123,7 +123,7 @@
                 </div>
 
                 <div class="cta-analysis-action">
-                    <a href="#simulador" class="btn btn-primary btn-large">Iniciar Pré-Solicitação <i class="ph ph-arrow-right"></i></a>
+                    <a href="#simulador" class="btn btn-primary btn-large">Fazer uma pré-análise agora <i class="ph ph-arrow-right"></i></a>
                 </div>
 
                 <div class="cta-disclaimer">
@@ -355,13 +355,12 @@
             <div class="container">
                 <div class="form-wrapper">
                     <div class="form-header">
-                        <h2>Pré-Solicitação de Crédito</h2>
-                        <p>Preencha suas informações de forma segura para análise.</p>
+                        <h2>Pré-análise de crédito</h2>
+                        <p>Preencha suas informações de forma segura para a pré-análise.</p>
                         <div class="progress-steps">
                             <div class="pstep active" data-target="1"><span>1</span> Valor</div>
                             <div class="pstep" data-target="2"><span>2</span> Renda</div>
-                            <div class="pstep" data-target="3"><span>3</span> Perfil</div>
-                            <div class="pstep" data-target="4"><span>4</span> Contato</div>
+                            <div class="pstep" data-target="3"><span>3</span> Contato</div>
                         </div>
                         <div class="progress-bar">
                             <div class="progress" id="progress"></div>
@@ -369,53 +368,74 @@
                     </div>
                     
                     <form id="simulation-form">
-                        <!-- Step 1 — Valor desejado -->
+                        <!-- Step 1 — Valor -->
                         <div class="form-step active" data-step="1">
-                            <h3>Quanto você deseja solicitar?</h3>
+                            <h3>Qual valor você precisa?</h3>
                             <div class="input-group">
-                                <label for="valor">Valor desejado (R$)</label>
-                                <input type="text" id="valor" name="valor" placeholder="Ex: 1.500,00" required>
+                                <label for="valor">Valor desejado</label>
+                                <input type="text" id="valor" name="valor" placeholder="Ex: R$ 1.000,00" required>
                             </div>
-                            <p class="form-hint"><i class="ph ph-info"></i> A aprovação depende da análise do seu perfil financeiro.</p>
+                            <div class="input-group">
+                                <label for="finalidade">Finalidade do crédito</label>
+                                <input type="text" id="finalidade" name="finalidade" placeholder="Ex: quitar dívida, emergência, compra, capital de giro..." required>
+                            </div>
+                            <p class="form-hint"><i class="ph ph-info"></i> Sujeito à análise. Não solicitamos documentos nesta etapa.</p>
                             <div class="form-actions">
                                 <button type="button" class="btn btn-primary btn-next btn-full">Continuar</button>
                             </div>
                         </div>
 
-                        <!-- Step 2 — Perfil de renda -->
+                        <!-- Step 2 — Renda -->
                         <div class="form-step" data-step="2">
-                            <h3>Perfil de Renda</h3>
+                            <h3>Informações de Renda e Cadastro</h3>
+                            
+                            <div class="input-group">
+                                <label for="cpf">CPF</label>
+                                <input type="tel" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                                <span id="cpf-msg" style="display: none; font-size: 0.85rem; margin-top: 5px;"></span>
+                                <p class="form-hint" style="margin-top: 8px;"><i class="ph ph-lock-key"></i> Seus dados serão utilizados apenas para análise cadastral e contato.</p>
+                            </div>
 
                             <div class="field-block">
-                                <label class="field-label">Tipo de renda</label>
-                                <div class="chip-group" data-name="tipo_renda">
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="CLT" required><span>CLT</span></label>
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="Autônomo"><span>Autônomo</span></label>
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="MEI"><span>MEI</span></label>
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="Aposentado"><span>Aposentado</span></label>
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="Benefício"><span>Benefício</span></label>
-                                    <label class="chip"><input type="radio" name="tipo_renda" value="Sem renda fixa"><span>Sem renda fixa</span></label>
+                                <label class="field-label">Qual é sua renda média mensal?</label>
+                                <div class="chip-group" data-name="renda_media">
+                                    <label class="chip"><input type="radio" name="renda_media" value="Até R$ 2.000" required><span>Até R$ 2.000</span></label>
+                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 2.001 a R$ 3.500"><span>De R$ 2.001 a R$ 3.500</span></label>
+                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 3.501 a R$ 5.000"><span>De R$ 3.501 a R$ 5.000</span></label>
+                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 5.001 a R$ 8.000"><span>De R$ 5.001 a R$ 8.000</span></label>
+                                    <label class="chip"><input type="radio" name="renda_media" value="Acima de R$ 8.000"><span>Acima de R$ 8.000</span></label>
                                 </div>
                             </div>
 
-                            <div class="input-group">
-                                <label for="renda_mensal">Renda mensal (R$)</label>
-                                <input type="text" id="renda_mensal" name="renda_mensal" placeholder="Ex: 2.500,00" required>
+                            <div class="field-block">
+                                <label class="field-label">Como você comprova sua renda?</label>
+                                <div class="chip-group" data-name="comprovante">
+                                    <label class="chip"><input type="radio" name="comprovante" value="Holerite" required><span>Holerite</span></label>
+                                    <label class="chip"><input type="radio" name="comprovante" value="Extrato bancário"><span>Extrato bancário</span></label>
+                                    <label class="chip"><input type="radio" name="comprovante" value="Movimentação de conta"><span>Movimentação de conta</span></label>
+                                    <label class="chip"><input type="radio" name="comprovante" value="Faturamento do comércio"><span>Faturamento do comércio</span></label>
+                                    <label class="chip"><input type="radio" name="comprovante" value="Declaração de renda"><span>Declaração de renda</span></label>
+                                    <label class="chip"><input type="radio" name="comprovante" value="Não consigo comprovar"><span>Não consigo comprovar</span></label>
+                                </div>
                             </div>
 
                             <div class="field-block">
-                                <label class="field-label">Tempo de renda</label>
+                                <label class="field-label">Há quanto tempo possui essa renda?</label>
                                 <div class="chip-group" data-name="tempo_renda">
                                     <label class="chip"><input type="radio" name="tempo_renda" value="Menos de 3 meses" required><span>Menos de 3 meses</span></label>
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="3 a 6 meses"><span>3 a 6 meses</span></label>
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="6 a 12 meses"><span>6 a 12 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="De 3 a 6 meses"><span>De 3 a 6 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda" value="De 6 meses a 1 ano"><span>De 6 meses a 1 ano</span></label>
                                     <label class="chip"><input type="radio" name="tempo_renda" value="Mais de 1 ano"><span>Mais de 1 ano</span></label>
                                 </div>
                             </div>
 
-                            <div class="input-group">
-                                <label for="profissao">Profissão / Atividade atual</label>
-                                <input type="text" id="profissao" name="profissao" placeholder="Ex: Vendedor, Motorista, Cabeleireiro..." required>
+                            <div class="field-block">
+                                <label class="field-label">Qual frequência de recebimento prefere no contrato?</label>
+                                <div class="chip-group" data-name="tipo_contrato">
+                                    <label class="chip"><input type="radio" name="tipo_contrato" value="A cada 7 dias" required><span>A cada 7 dias</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_contrato" value="A cada 15 dias"><span>A cada 15 dias</span></label>
+                                    <label class="chip"><input type="radio" name="tipo_contrato" value="A cada 30 dias"><span>A cada 30 dias</span></label>
+                                </div>
                             </div>
 
                             <div class="form-actions row">
@@ -424,91 +444,71 @@
                             </div>
                         </div>
 
-                        <!-- Step 3 — Perfil bancário -->
+                        <!-- Step 3 — Contato -->
                         <div class="form-step" data-step="3">
-                            <h3>Perfil Bancário</h3>
-
-                            <div class="field-block">
-                                <label class="field-label">Possui extrato dos últimos 90 dias?</label>
-                                <div class="chip-group" data-name="extrato">
-                                    <label class="chip"><input type="radio" name="extrato" value="Sim" required><span>Sim</span></label>
-                                    <label class="chip"><input type="radio" name="extrato" value="Não"><span>Não</span></label>
-                                </div>
-                            </div>
-
-                            <div class="field-block">
-                                <label class="field-label">Nome negativado?</label>
-                                <div class="chip-group" data-name="negativado">
-                                    <label class="chip"><input type="radio" name="negativado" value="Sim" required><span>Sim</span></label>
-                                    <label class="chip"><input type="radio" name="negativado" value="Não"><span>Não</span></label>
-                                    <label class="chip"><input type="radio" name="negativado" value="Não sei"><span>Não sei</span></label>
-                                </div>
-                            </div>
-
-                            <div class="field-block">
-                                <label class="field-label">Recebe por PIX frequentemente?</label>
-                                <div class="chip-group" data-name="pix">
-                                    <label class="chip"><input type="radio" name="pix" value="Sim" required><span>Sim</span></label>
-                                    <label class="chip"><input type="radio" name="pix" value="Não"><span>Não</span></label>
-                                </div>
-                            </div>
-
-                            <div class="form-actions row">
-                                <button type="button" class="btn btn-outline btn-prev">Voltar</button>
-                                <button type="button" class="btn btn-primary btn-next">Continuar</button>
-                            </div>
-                        </div>
-
-                        <!-- Step 4 — Contato -->
-                        <div class="form-step" data-step="4">
-                            <h3>Dados para Contato</h3>
-
+                            <h3>Dados para contato</h3>
                             <div class="input-group">
                                 <label for="nome">Nome completo</label>
-                                <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="cpf">CPF</label>
-                                <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
                             </div>
                             <div class="input-group">
                                 <label for="whatsapp">WhatsApp</label>
-                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" required>
                             </div>
                             <div class="input-group">
-                                <label for="cep">CEP</label>
+                                <label for="cep">CEP <span id="cep-loading" style="display: none; font-size: 0.85rem; color: var(--primary-color); margin-left: 8px;"><i class="ph ph-spinner ph-spin"></i> Buscando...</span><span id="cep-error" style="display: none; font-size: 0.85rem; color: var(--danger); margin-left: 8px;">CEP não encontrado.</span></label>
                                 <input type="text" id="cep" name="cep" placeholder="00000-000" required>
                             </div>
                             <div class="input-group">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo" required>
+                                <label for="rua">Rua (Logradouro)</label>
+                                <input type="text" id="rua" name="rua" required>
+                            </div>
+                            <div style="display: flex; gap: 16px;">
+                                <div class="input-group" style="flex: 1;">
+                                    <label for="numero">Número</label>
+                                    <input type="text" id="numero" name="numero" required>
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <label for="complemento">Complemento</label>
+                                    <input type="text" id="complemento" name="complemento" placeholder="Apto, Casa...">
+                                </div>
                             </div>
                             <div class="input-group">
                                 <label for="bairro">Bairro</label>
-                                <input type="text" id="bairro" name="bairro" placeholder="Ex: Centro" required>
+                                <input type="text" id="bairro" name="bairro" required>
                             </div>
-                            <div class="input-group">
-                                <label for="uf">UF (Estado)</label>
-                                <input type="text" id="uf" name="uf" placeholder="Ex: SP" maxlength="2" required>
+                            <div style="display: flex; gap: 16px;">
+                                <div class="input-group" style="flex: 2;">
+                                    <label for="cidade">Cidade</label>
+                                    <input type="text" id="cidade" name="cidade" required>
+                                </div>
+                                <div class="input-group" style="flex: 1;">
+                                    <label for="uf">Estado (UF)</label>
+                                    <input type="text" id="uf" name="uf" required>
+                                </div>
                             </div>
 
                             <div class="form-actions row">
                                 <button type="button" class="btn btn-outline btn-prev">Voltar</button>
-                                <button type="submit" class="btn btn-primary btn-submit">Enviar Pré-Solicitação</button>
+                                <button type="submit" class="btn btn-primary btn-submit">Enviar pré-análise</button>
                             </div>
                         </div>
 
                         <!-- Loading State -->
                         <div class="form-loading" id="loading-step" style="display: none;">
                             <div class="spinner"></div>
-                            <h3>Estamos preparando sua solicitação...</h3>
+                            <h3>Estamos processando sua solicitação...</h3>
                         </div>
 
                         <!-- Success Message -->
                         <div class="form-success" id="success-step" style="display: none;">
                             <div class="success-icon"><i class="ph ph-check-circle"></i></div>
-                            <h3>Pré-solicitação recebida!</h3>
-                            <p>Entraremos em contato em breve pelo WhatsApp para dar andamento à sua solicitação.</p>
+                            <h3>Pré-solicitação recebida com sucesso</h3>
+                            <p>Nossa equipe fará uma análise inicial das informações enviadas. Caso o perfil seja compatível, <strong>entraremos em contato pelo WhatsApp em torno de 2 a 3 horas</strong> para dar continuidade ao atendimento.</p>
+                            <div style="margin-top: 15px; font-size: 0.85rem; color: #666; background: #f8f9fa; padding: 10px; border-radius: 8px;">
+                                O envio da pré-solicitação não garante aprovação. Não cobramos taxa antecipada para liberação de crédito. Toda proposta depende de análise.
+                            </div>
+                            <a href="#" id="btn-whatsapp-redirect" class="btn btn-primary" style="margin-top: 20px; display: none;" target="_blank">Acompanhar via WhatsApp</a>
                         </div>
                     </form>
 
