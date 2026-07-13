@@ -253,17 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
             loadingEl.style.display = 'none';
             successEl.style.display = 'block';
 
-            // Integração WhatsApp
-            const msg = buildWhatsAppMessage();
-            const wppUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(msg)}`;
-            const wppBtn = document.getElementById('btn-whatsapp-redirect');
-            if(wppBtn) {
-                wppBtn.href = wppUrl;
-                wppBtn.style.display = 'inline-block';
-                setTimeout(() => {
-                    window.open(wppUrl, '_blank');
-                }, 2000);
-            }
+            // Integração WhatsApp removida a pedido do usuário
 
         } catch (err) {
             console.error('Erro detalhado:', err);
