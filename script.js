@@ -197,9 +197,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const observacoes = `Tipo Renda: ${tipoRenda} | Tempo Renda: ${tempoRenda} | Profissão: ${profissao} | Extrato 90d: ${extrato} | Negativado: ${negativado} | PIX: ${pix}`;
 
         try {
-            const { error } = await supabase
-                .from('leads')
-                .insert([{
+            // Usando a API REST exata que você forneceu
+            const response = await fetch('https://gwxwxsvuuhuovmrjwold.supabase.co/rest/v1/leads', {
+                method: 'POST',
+                headers: {
+                    'apikey': 'sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
+                    'Authorization': 'Bearer sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=representation'
+                },
+                body: JSON.stringify({
                     nome: document.getElementById('nome').value.trim(),
                     cpf: document.getElementById('cpf').value.trim(),
                     telefone: document.getElementById('whatsapp').value.trim(),
@@ -211,16 +218,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     renda_mensal: renda,
                     observacoes: observacoes,
                     origem: 'Landing Page'
-                }]);
+                })
+            });
 
-            if (error) throw error;
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Erro da API:", errorData);
+                throw new Error('Erro na comunicação com a API');
+            }
 
+            // Esconde loading e mostra sucesso
             loadingEl.style.display = 'none';
             successEl.style.display = 'block';
+
         } catch (err) {
-            console.error('Erro ao salvar no Supabase:', err);
-            alert('Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.');
+            console.error('Erro detalhado:', err);
             loadingEl.style.display = 'none';
+            alert('Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.');
             steps[currentStep - 1].style.display = 'block';
             document.querySelector('.progress-steps').style.display = 'flex';
         }
