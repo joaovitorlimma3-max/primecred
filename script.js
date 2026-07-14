@@ -3,11 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // Configuração — Supabase e WhatsApp
     // =========================================================================
-    const SUPABASE_URL = 'https://gwxwxsvuuhuovmrjwold.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij';
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    // As variáveis são injetadas pelo Vite no momento do build
+    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+    const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
     const WHATSAPP_NUMBER = '5521959433111';
+
+    // Utilitário para gerar Event ID (usado na API de Conversões futura)
+    function generateEventId() {
+        return 'evt_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+    }
 
     // =========================================================================
     // Header — Efeito de scroll (caso exista)
@@ -17,6 +23,34 @@ document.addEventListener('DOMContentLoaded', () => {
         window.addEventListener('scroll', () => {
             header.classList.toggle('scrolled', window.scrollY > 50);
         });
+    }
+
+    // =========================================================================
+    // Tracking de Cliques nos Botões (CTA)
+    // =========================================================================
+    document.querySelectorAll('a[href="#simulador"]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (window.fbq) {
+                window.fbq('trackCustom', 'CliqueSimulador', {}, { eventID: generateEventId() });
+            }
+        });
+    });
+
+    // =========================================================================
+    // ViewContent (Tracking do Simulador na Tela)
+    // =========================================================================
+    const simuladorSection = document.getElementById('simulador');
+    if (simuladorSection && window.IntersectionObserver) {
+        let viewContentFired = false;
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !viewContentFired) {
+                viewContentFired = true;
+                if (window.fbq) {
+                    window.fbq('track', 'ViewContent', { content_name: 'Simulador' }, { eventID: generateEventId() });
+                }
+            }
+        }, { threshold: 0.3 });
+        observer.observe(simuladorSection);
     }
 
     // =========================================================================
@@ -156,6 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.btn-next').forEach(btn => {
         btn.addEventListener('click', () => {
             if (validateStep(currentStep)) {
+                if (window.fbq) {
+                    const stepNames = { 1: 'Valor_Desejado', 2: 'Renda_Cadastro', 3: 'Contato' };
+                    window.fbq('trackCustom', 'FormStep', { 
+                        step_number: currentStep,
+                        step_name: stepNames[currentStep] || `Etapa_${currentStep}`
+                    }, { eventID: generateEventId() });
+                }
                 currentStep++;
                 updateForm();
             }
@@ -180,7 +221,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!validateStep(currentStep)) return;
 
-        // O disparo do pixel foi movido para o bloco de sucesso (após enviar ao Supabase)
+        const submitBtn = form.querySelector('.btn-submit');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Enviando...';
+        }
+
+        // Dispara o evento de checkout iniciado
+        if (window.fbq) {
+            window.fbq('track', 'InitiateCheckout', { content_name: 'Pre-Solicitacao de Credito' }, { eventID: generateEventId() });
+        }
 
         // Esconde etapas e mostra loading
         steps.forEach(step => step.style.display = 'none');
@@ -213,12 +263,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const observacoes = `Endereço: ${enderecoCompleto} | Finalidade: ${finalidade} | Tipo de contrato: ${tipo_contrato} | Renda Média: ${renda_media} | Comprovante: ${statusComprovacao} | Tempo: ${tempo_renda}`;
 
         try {
-            // Usando a API REST exata que você forneceu
-            const response = await fetch('https://gwxwxsvuuhuovmrjwold.supabase.co/rest/v1/leads', {
+            // Usando a API REST via SUPABASE_URL seguro
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
                 method: 'POST',
                 headers: {
-                    'apikey': 'sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
-                    'Authorization': 'Bearer sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij',
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=minimal'
                 },
@@ -251,11 +301,12 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.fbq) {
                 window.fbq('track', 'CompleteRegistration', {
                     content_name: 'Pre-Solicitacao de Credito'
-                });
+                }, { eventID: generateEventId() });
+                
                 window.fbq('track', 'Lead', {
                     currency: 'BRL',
-                    value: valor
-                });
+                    value: valor > 0 ? valor : 0.00
+                }, { eventID: generateEventId() });
             }
 
             // Integração WhatsApp removida a pedido do usuário
@@ -266,6 +317,10 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.');
             steps[currentStep - 1].style.display = 'block';
             document.querySelector('.progress-steps').style.display = 'flex';
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Enviar pré-análise';
+            }
         }
     });
 
