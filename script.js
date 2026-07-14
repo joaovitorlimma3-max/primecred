@@ -180,13 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!validateStep(currentStep)) return;
 
-        // Dispara evento Meta Pixel — CompleteRegistration
-        if (typeof fbq === 'function') {
-            fbq('track', 'CompleteRegistration', {
-                content_name: 'Pre-Solicitacao de Credito',
-                status: true
-            });
-        }
+        // O disparo do pixel foi movido para o bloco de sucesso (após enviar ao Supabase)
 
         // Esconde etapas e mostra loading
         steps.forEach(step => step.style.display = 'none');
@@ -252,6 +246,17 @@ document.addEventListener('DOMContentLoaded', () => {
             // Esconde loading e mostra sucesso
             loadingEl.style.display = 'none';
             successEl.style.display = 'block';
+
+            // Dispara eventos Meta Pixel confirmando o sucesso
+            if (window.fbq) {
+                window.fbq('track', 'CompleteRegistration', {
+                    content_name: 'Pre-Solicitacao de Credito'
+                });
+                window.fbq('track', 'Lead', {
+                    currency: 'BRL',
+                    value: valor
+                });
+            }
 
             // Integração WhatsApp removida a pedido do usuário
 
