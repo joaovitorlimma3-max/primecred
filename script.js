@@ -263,7 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const faixa_renda = getRadioValue('renda_media');
         const comprovacao_renda = getRadioValue('comprovante');
         const tempo_renda = getRadioValue('tempo_renda');
-        const melhor_periodo_contato = getRadioValue('melhor_horario');
         const consent = document.getElementById('consentimento').checked;
 
         const payload = {
@@ -280,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
             faixa_renda: faixa_renda,
             comprovacao_renda: comprovacao_renda,
             tempo_renda: tempo_renda,
-            melhor_periodo_contato: melhor_periodo_contato,
             consentimento_whatsapp: consent,
             status: 'Novo', // Cadastro finalizado
             etapa: '2',
@@ -326,9 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 sessionStorage.setItem('pixel_lead_sent', 'true');
             }
 
-            // Botão WhatsApp de Sucesso
-            const msg = encodeURIComponent(`Olá, finalizei minha pré-análise no site e gostaria de falar com um especialista.`);
-            document.getElementById('btn-whatsapp-final').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+            // O botão de WhatsApp foi removido conforme solicitado
 
         } catch (err) {
             console.error('Erro ao enviar:', err);
