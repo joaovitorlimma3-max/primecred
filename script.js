@@ -1,22 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // =========================================================================
-    // Configuração — Supabase e WhatsApp
+    // Configuração — Supabase e UTMs
     // =========================================================================
-    // As variáveis são injetadas pelo Vite no momento do build
-    const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-    const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-    const supabase = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
+    let envUrl = 'https://gwxwxsvuuhuovmrjwold.supabase.co';
+    let envKey = 'sb_publishable_Vquz6FcYtbLp7bwN8ad3uQ_AVwax1Ij';
     const WHATSAPP_NUMBER = '5521959433111';
+    try {
+        if (typeof import.meta !== 'undefined' && import.meta.env) {
+            envUrl = import.meta.env.VITE_SUPABASE_URL || envUrl;
+            envKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || envKey;
+        }
+    } catch (e) { console.warn("Vite env vars indisponíveis"); }
 
-    // Utilitário para gerar Event ID (usado na API de Conversões futura)
-    function generateEventId() {
-        return 'evt_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
-    }
+    const SUPABASE_URL = envUrl;
+    const SUPABASE_KEY = envKey;
+
+    // Capturar UTMs da URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const utm_source = urlParams.get('utm_source') || '';
+    const utm_medium = urlParams.get('utm_medium') || '';
+    const utm_campaign = urlParams.get('utm_campaign') || '';
+    const pagina_origem = window.location.pathname;
+
+    let isSubmitting = false;
 
     // =========================================================================
-    // Header — Efeito de scroll (caso exista)
+    // Header scroll
     // =========================================================================
     const header = document.getElementById('header');
     if (header) {
@@ -26,32 +36,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // =========================================================================
-    // Tracking de Cliques nos Botões (CTA)
+    // Rastreamento (Meta Pixel)
     // =========================================================================
-    document.querySelectorAll('a[href="#simulador"]').forEach(btn => {
+    function generateEventId() {
+        return 'evt_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+    }
+
+    // StartPreAnalysis (Primeira interação) - Apenas 1x
+    const inputsForm = document.querySelectorAll('#simulation-form input');
+    const onFirstInput = () => {
+        if (!sessionStorage.getItem('pixel_start')) {
+            sessionStorage.setItem('pixel_start', 'true');
+            if (typeof window.fbq === "function") {
+                window.fbq('trackCustom', 'StartPreAnalysis', {}, { eventID: generateEventId() });
+            }
+        }
+        inputsForm.forEach(i => i.removeEventListener('focus', onFirstInput));
+        inputsForm.forEach(i => i.removeEventListener('input', onFirstInput));
+    };
+    inputsForm.forEach(i => {
+        i.addEventListener('focus', onFirstInput);
+        i.addEventListener('input', onFirstInput);
+    });
+
+    // WhatsApp Tracking
+    document.querySelectorAll('.btn-wa-contact').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (window.fbq) {
-                window.fbq('trackCustom', 'CliqueSimulador', {}, { eventID: generateEventId() });
+            if (typeof window.fbq === "function") {
+                window.fbq('trackCustom', 'Contact', {}, { eventID: generateEventId() });
             }
         });
     });
-
-    // =========================================================================
-    // ViewContent (Tracking do Simulador na Tela)
-    // =========================================================================
-    const simuladorSection = document.getElementById('simulador');
-    if (simuladorSection && window.IntersectionObserver) {
-        let viewContentFired = false;
-        const observer = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting && !viewContentFired) {
-                viewContentFired = true;
-                if (window.fbq) {
-                    window.fbq('track', 'ViewContent', { content_name: 'Simulador' }, { eventID: generateEventId() });
-                }
-            }
-        }, { threshold: 0.3 });
-        observer.observe(simuladorSection);
-    }
 
     // =========================================================================
     // FAQ — Accordion
@@ -60,23 +75,19 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             const item = btn.parentElement;
             const content = btn.nextElementSibling;
-
             document.querySelectorAll('.accordion-item').forEach(other => {
                 if (other !== item) {
                     other.classList.remove('active');
                     other.querySelector('.accordion-content').style.maxHeight = null;
                 }
             });
-
             item.classList.toggle('active');
-            content.style.maxHeight = item.classList.contains('active')
-                ? content.scrollHeight + 'px'
-                : null;
+            content.style.maxHeight = item.classList.contains('active') ? content.scrollHeight + 'px' : null;
         });
     });
 
     // =========================================================================
-    // Formulário Multi-etapas (4 etapas)
+    // Formulário Multi-etapas (Apenas Memória e Frontend)
     // =========================================================================
     const form = document.getElementById('simulation-form');
     const steps = document.querySelectorAll('.form-step');
@@ -84,84 +95,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const loadingEl = document.getElementById('loading-step');
     const successEl = document.getElementById('success-step');
     const progressSteps = document.querySelectorAll('.pstep');
+    const simuladorSection = document.getElementById('pre-analise');
     const totalSteps = steps.length;
-
     let currentStep = 1;
 
-    // --- Atualiza visual das etapas, barra e indicadores ---
     function updateForm() {
         steps.forEach(step => {
             step.classList.toggle('active', parseInt(step.dataset.step) === currentStep);
         });
-
-        // Barra de progresso
         progress.style.width = `${(currentStep / totalSteps) * 100}%`;
-
-        // Indicadores de etapa
         progressSteps.forEach(ps => {
             const target = parseInt(ps.dataset.target);
             ps.classList.remove('active', 'done');
             if (target === currentStep) ps.classList.add('active');
             else if (target < currentStep) ps.classList.add('done');
         });
-    }
-
-    // --- Validação genérica por etapa ---
-    function validateStep(stepNum) {
-        const step = document.querySelector(`.form-step[data-step="${stepNum}"]`);
-        let isValid = true;
-
-        // Limpa erros anteriores
-        step.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
-        step.querySelectorAll('.chip-error').forEach(el => el.classList.remove('chip-error'));
-        step.querySelectorAll('.value-grid.value-error').forEach(el => el.classList.remove('value-error'));
-        step.querySelectorAll('.error-message').forEach(el => el.remove());
-
-        // Valida todos os radio groups dentro da etapa
-        const radioNames = new Set();
-        step.querySelectorAll('input[type="radio"]').forEach(r => radioNames.add(r.name));
-
-        radioNames.forEach(name => {
-            const checked = step.querySelector(`input[name="${name}"]:checked`);
-            if (!checked) {
-                isValid = false;
-                // Encontra o container correto
-                const chipGroup = step.querySelector(`.chip-group[data-name="${name}"]`);
-                const valueGrid = step.querySelector('.value-grid');
-                if (chipGroup) {
-                    chipGroup.classList.add('chip-error');
-                    appendError(chipGroup.closest('.field-block') || chipGroup.parentElement, 'Selecione uma opção.');
-                } else if (valueGrid) {
-                    valueGrid.classList.add('value-error');
-                    appendError(valueGrid.parentElement, 'Selecione um valor.');
-                }
-            }
-        });
-
-        // Valida inputs de texto / tel
-        step.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => {
-            if (input.hasAttribute('required') && !input.value.trim()) {
-                isValid = false;
-                input.classList.add('input-error');
-                appendError(input.closest('.input-group'), 'Este campo é obrigatório.');
-            }
-            
-            if (input.id === 'cpf') {
-                const rawValue = input.value.replace(/\D/g, '');
-                if (rawValue.length > 0 && !validarCPF(rawValue)) {
-                    isValid = false;
-                    input.classList.add('input-error');
-                    const msgEl = document.getElementById('cpf-msg');
-                    if (msgEl) {
-                        msgEl.textContent = 'Informe um CPF válido para continuar.';
-                        msgEl.style.color = 'var(--danger)';
-                        msgEl.style.display = 'block';
-                    }
-                }
-            }
-        });
-
-        return isValid;
+        
+        if (currentStep > 1 && simuladorSection) {
+            simuladorSection.scrollIntoView({ behavior: 'smooth' });
+        }
     }
 
     function appendError(container, message) {
@@ -169,232 +121,236 @@ document.addEventListener('DOMContentLoaded', () => {
         const el = document.createElement('p');
         el.className = 'error-message visible';
         el.textContent = message;
+        el.style.color = 'var(--danger)';
+        el.style.fontSize = '0.85rem';
+        el.style.marginTop = '4px';
         container.appendChild(el);
     }
 
-    // Limpa erro ao interagir
+    function validateStep(stepNum) {
+        const step = document.querySelector(`.form-step[data-step="${stepNum}"]`);
+        let isValid = true;
+
+        step.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+        step.querySelectorAll('.chip-error').forEach(el => el.classList.remove('chip-error'));
+        step.querySelectorAll('.error-message').forEach(el => el.remove());
+
+        const radioNames = new Set();
+        step.querySelectorAll('input[type="radio"]').forEach(r => radioNames.add(r.name));
+
+        radioNames.forEach(name => {
+            const checked = step.querySelector(`input[name="${name}"]:checked`);
+            if (!checked && step.querySelector(`input[name="${name}"][required]`)) {
+                isValid = false;
+                const chipGroup = step.querySelector(`.chip-group[data-name="${name}"]`);
+                if (chipGroup) {
+                    chipGroup.classList.add('chip-error');
+                    appendError(chipGroup.parentElement, 'Selecione uma opção.');
+                }
+            }
+        });
+
+        step.querySelectorAll('input[type="text"], input[type="tel"]').forEach(input => {
+            if (input.hasAttribute('required') && !input.value.trim()) {
+                isValid = false;
+                input.classList.add('input-error');
+                appendError(input.closest('.input-group'), 'Este campo é obrigatório.');
+            }
+            
+            if (input.id === 'whatsapp' && input.value.trim()) {
+                const num = input.value.replace(/\D/g, '');
+                const isRepeated = /^(\d)\1+$/.test(num);
+                const ddd = parseInt(num.substring(0, 2), 10);
+                
+                // Regex rígida para celular BR
+                if (!/^\d{10,11}$/.test(num) || isRepeated || ddd < 11 || ddd > 99) {
+                    isValid = false;
+                    input.classList.add('input-error');
+                    appendError(input.closest('.input-group'), 'Digite um número de telefone válido com DDD.');
+                }
+            }
+        });
+
+        const consent = step.querySelector('#consentimento');
+        if (consent && !consent.checked) {
+            isValid = false;
+            const label = consent.closest('.checkbox-label');
+            label.style.color = 'var(--danger)';
+            appendError(consent.closest('.consent-box'), 'Você precisa concordar com os termos.');
+        }
+
+        return isValid;
+    }
+
     document.querySelectorAll('.form-step input').forEach(input => {
-        const event = input.type === 'radio' ? 'change' : 'input';
+        const event = input.type === 'radio' || input.type === 'checkbox' ? 'change' : 'input';
         input.addEventListener(event, () => {
             input.classList.remove('input-error');
             const step = input.closest('.form-step');
             if (step) {
                 step.querySelectorAll('.chip-error').forEach(el => el.classList.remove('chip-error'));
-                step.querySelectorAll('.value-error').forEach(el => el.classList.remove('value-error'));
                 step.querySelectorAll('.error-message').forEach(el => el.remove());
+            }
+            if (input.id === 'consentimento') {
+                input.closest('.checkbox-label').style.color = '';
             }
         });
     });
 
-    // --- Botões Continuar ---
+    // =========================================================================
+    // Avançar para Etapa 2 (Apenas em memória, sem enviar ao banco)
+    // =========================================================================
     document.querySelectorAll('.btn-next').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (validateStep(currentStep)) {
-                if (window.fbq) {
-                    const stepNames = { 1: 'Valor_Desejado', 2: 'Renda_Cadastro', 3: 'Contato' };
-                    window.fbq('trackCustom', 'FormStep', { 
-                        step_number: currentStep,
-                        step_name: stepNames[currentStep] || `Etapa_${currentStep}`
-                    }, { eventID: generateEventId() });
-                }
+            if (!validateStep(currentStep)) return;
+            if (currentStep === 1) {
                 currentStep++;
                 updateForm();
             }
         });
     });
 
-    // --- Botões Voltar ---
+    // =========================================================================
+    // Voltar
+    // =========================================================================
     document.querySelectorAll('.btn-prev').forEach(btn => {
         btn.addEventListener('click', () => {
-            if (currentStep > 1) {
+            if (currentStep > 1 && !isSubmitting) {
                 currentStep--;
                 updateForm();
             }
         });
     });
 
-    // =========================================================================
-    // Envio do formulário — Loading → Gravar no Supabase → Tela de sucesso
-    // =========================================================================
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        if (!validateStep(currentStep)) return;
-
-        const submitBtn = form.querySelector('.btn-submit');
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Enviando...';
-        }
-
-        // Dispara o evento de checkout iniciado
-        if (window.fbq) {
-            window.fbq('track', 'InitiateCheckout', { content_name: 'Pre-Solicitacao de Credito' }, { eventID: generateEventId() });
-        }
-
-        // Esconde etapas e mostra loading
-        steps.forEach(step => step.style.display = 'none');
-        document.querySelector('.progress-steps').style.display = 'none';
-        loadingEl.style.display = 'block';
-        progress.style.width = '100%';
-
-        // Prepara os dados
-        const valorSolicitadoStr = document.getElementById('valor').value.replace(/\D/g, '');
-        const valor = valorSolicitadoStr ? parseInt(valorSolicitadoStr) / 100 : 0;
-        const renda = 0;
-
-        const finalidade = document.getElementById('finalidade').value.trim();
-        const tipo_contrato = getRadioValue('tipo_contrato');
-        
-        const renda_media = getRadioValue('renda_media');
-        const comprovante = getRadioValue('comprovante');
-        const tempo_renda = getRadioValue('tempo_renda');
-        
-        let statusComprovacao = comprovante;
-        if (comprovante === 'Não consigo comprovar') {
-            statusComprovacao = 'Comprovação de renda pendente';
-        }
-
-        const rua = document.getElementById('rua').value.trim();
-        const numero = document.getElementById('numero').value.trim();
-        const complemento = document.getElementById('complemento').value.trim();
-        const enderecoCompleto = `${rua}, ${numero} ${complemento ? '- ' + complemento : ''}`;
-
-        const observacoes = `Endereço: ${enderecoCompleto} | Finalidade: ${finalidade} | Tipo de contrato: ${tipo_contrato} | Renda Média: ${renda_media} | Comprovante: ${statusComprovacao} | Tempo: ${tempo_renda}`;
-
-        try {
-            // Usando a API REST via SUPABASE_URL seguro
-            const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
-                method: 'POST',
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': `Bearer ${SUPABASE_KEY}`,
-                    'Content-Type': 'application/json',
-                    'Prefer': 'return=minimal'
-                },
-                body: JSON.stringify({
-                    nome: document.getElementById('nome').value.trim(),
-                    cpf: document.getElementById('cpf').value.trim(),
-                    telefone: document.getElementById('whatsapp').value.trim(),
-                    cep: document.getElementById('cep').value.trim(),
-                    cidade: document.getElementById('cidade').value.trim(),
-                    bairro: document.getElementById('bairro').value.trim(),
-                    uf: document.getElementById('uf').value.trim().toUpperCase(),
-                    valor_solicitado: valor,
-                    renda_mensal: renda,
-                    observacoes: observacoes,
-                    origem: 'Landing Page'
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Erro da API:", errorData);
-                throw new Error('Erro na comunicação com a API');
-            }
-
-            // Esconde loading e mostra sucesso
-            loadingEl.style.display = 'none';
-            successEl.style.display = 'block';
-
-            // Dispara eventos Meta Pixel confirmando o sucesso
-            if (window.fbq) {
-                window.fbq('track', 'CompleteRegistration', {
-                    content_name: 'Pre-Solicitacao de Credito'
-                }, { eventID: generateEventId() });
-                
-                window.fbq('track', 'Lead', {
-                    currency: 'BRL',
-                    value: valor > 0 ? valor : 0.00
-                }, { eventID: generateEventId() });
-            }
-
-            // Integração WhatsApp removida a pedido do usuário
-
-        } catch (err) {
-            console.error('Erro detalhado:', err);
-            loadingEl.style.display = 'none';
-            alert('Ocorreu um erro ao enviar sua solicitação. Por favor, tente novamente.');
-            steps[currentStep - 1].style.display = 'block';
-            document.querySelector('.progress-steps').style.display = 'flex';
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = 'Enviar pré-análise';
-            }
-        }
-    });
-
-    // =========================================================================
-    // Monta a mensagem formatada com TODOS os dados do novo formulário
-    // =========================================================================
-    function buildWhatsAppMessage() {
-        const valor       = document.getElementById('valor').value.trim();
-        const finalidade  = document.getElementById('finalidade').value.trim();
-        const tipo_contrato = getRadioValue('tipo_contrato');
-        
-        const renda_media = getRadioValue('renda_media');
-        const comprovante = getRadioValue('comprovante');
-        const tempo_renda = getRadioValue('tempo_renda');
-        
-        let statusComprovacao = comprovante;
-        if (comprovante === 'Não consigo comprovar') {
-            statusComprovacao = 'Comprovação de renda pendente';
-        }
-
-        const nome        = document.getElementById('nome').value.trim();
-        const cpf         = document.getElementById('cpf').value.trim();
-        const whatsapp    = document.getElementById('whatsapp').value.trim();
-        const cep         = document.getElementById('cep').value.trim();
-        const rua         = document.getElementById('rua').value.trim();
-        const numero      = document.getElementById('numero').value.trim();
-        const complemento = document.getElementById('complemento').value.trim();
-        const cidade      = document.getElementById('cidade').value.trim();
-        const bairro      = document.getElementById('bairro').value.trim();
-        const uf          = document.getElementById('uf').value.trim().toUpperCase();
-
-        const lines = [
-            'Olá! Gostaria de solicitar uma pré-análise de crédito.',
-            '',
-            '📋 *Dados da Pré-Solicitação*',
-            '',
-            '💰 *Valor desejado:*',
-            valor,
-            '',
-            `🎯 *Finalidade:* ${finalidade}`,
-            `⏱️ *Tipo de contrato:* ${tipo_contrato}`,
-            '',
-            '── *Renda* ──',
-            '',
-            `💵 *Renda média:* ${renda_media}`,
-            `🕒 *Tempo de renda:* ${tempo_renda}`,
-            `📄 *Comprovação:* ${statusComprovacao}`,
-            '',
-            '── *Contato e Endereço* ──',
-            '',
-            `👤 *Nome:* ${nome}`,
-            `🆔 *CPF:* ${cpf}`,
-            `📱 *WhatsApp:* ${whatsapp}`,
-            `📍 *Endereço:* ${rua}, ${numero} ${complemento ? '- ' + complemento : ''}`,
-            `🏘️ *Bairro:* ${bairro}`,
-            `🏙️ *Cidade/UF:* ${cidade} - ${uf}`,
-            `📮 *CEP:* ${cep}`,
-            '',
-            'Aguardo o retorno. Obrigado!'
-        ];
-
-        return lines.join('\n');
-    }
-
     function getRadioValue(name) {
         const checked = document.querySelector(`input[name="${name}"]:checked`);
         return checked ? checked.value : '';
     }
 
+    function toggleFormState(disabled) {
+        const buttons = form.querySelectorAll('button');
+        const inputs = form.querySelectorAll('input');
+        buttons.forEach(b => b.disabled = disabled);
+        inputs.forEach(i => i.disabled = disabled);
+    }
+
     // =========================================================================
-    // Máscaras de input
+    // Envio Final (Single Insert)
     // =========================================================================
-    function applyCurrencyMask(input) {
-        input.addEventListener('input', (e) => {
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        if (isSubmitting) return; // Proteção extra duplo clique
+        if (!validateStep(currentStep)) return;
+
+        isSubmitting = true;
+        const submitBtn = form.querySelector('.btn-submit');
+        const originalBtnHtml = submitBtn ? submitBtn.innerHTML : 'Enviar para análise';
+        
+        if (submitBtn) {
+            submitBtn.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Enviando...';
+        }
+        toggleFormState(true);
+
+        const valorStr = document.getElementById('valor').value.replace(/\D/g, '');
+        const valor = valorStr ? parseInt(valorStr) / 100 : 0;
+        const finalidade = document.getElementById('finalidade').value.trim();
+        const nome = document.getElementById('nome').value.trim();
+        const telefone = document.getElementById('whatsapp').value.replace(/\D/g, '');
+        const cidade = document.getElementById('cidade').value.trim();
+        const bairro = document.getElementById('bairro').value.trim();
+        
+        const faixa_renda = getRadioValue('renda_media');
+        const comprovacao_renda = getRadioValue('comprovante');
+        const tempo_renda = getRadioValue('tempo_renda');
+        const melhor_periodo_contato = getRadioValue('melhor_horario');
+        const consent = document.getElementById('consentimento').checked;
+
+        const payload = {
+            nome: nome.slice(0, 100),
+            telefone: telefone.slice(0, 15),
+            cidade: cidade.slice(0, 100),
+            bairro: bairro.slice(0, 100),
+            valor_solicitado: valor,
+            observacoes: `Finalidade: ${finalidade.slice(0, 200)}`,
+            origem: pagina_origem.slice(0, 200),
+            utm_source: utm_source ? utm_source.slice(0, 100) : null,
+            utm_medium: utm_medium ? utm_medium.slice(0, 100) : null,
+            utm_campaign: utm_campaign ? utm_campaign.slice(0, 100) : null,
+            faixa_renda: faixa_renda,
+            comprovacao_renda: comprovacao_renda,
+            tempo_renda: tempo_renda,
+            melhor_periodo_contato: melhor_periodo_contato,
+            consentimento_whatsapp: consent,
+            status: 'Novo', // Cadastro finalizado
+            etapa: '2',
+            data_conclusao: new Date().toISOString()
+        };
+
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
+        try {
+            const response = await fetch(`${SUPABASE_URL}/rest/v1/leads`, {
+                method: 'POST',
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`,
+                    'Content-Type': 'application/json'
+                    // IMPORTANT: We do NOT use 'Prefer: return=representation' here.
+                    // This allows anon to INSERT without needing SELECT permissions.
+                },
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            });
+
+            clearTimeout(timeoutId);
+
+            if (!response.ok) {
+                throw new Error(`HTTP Error: ${response.status}`);
+            }
+
+            // ================== SUCESSO ==================
+            steps.forEach(step => step.style.display = 'none');
+            document.querySelector('.progress-steps').style.display = 'none';
+            successEl.style.display = 'block';
+            progress.style.width = '100%';
+
+            // Rastreamento Meta Pixel: O evento Lead SÓ ocorre se o insert deu 201 Created.
+            if (typeof window.fbq === "function" && !sessionStorage.getItem('pixel_lead_sent')) {
+                window.fbq('track', 'Lead', {
+                    content_name: 'Pre Analise Concluida',
+                    currency: 'BRL',
+                    value: valor > 0 ? valor : 0.00
+                }, { eventID: generateEventId() });
+                sessionStorage.setItem('pixel_lead_sent', 'true');
+            }
+
+            // Botão WhatsApp de Sucesso
+            const msg = encodeURIComponent(`Olá, finalizei minha pré-análise no site e gostaria de falar com um especialista.`);
+            document.getElementById('btn-whatsapp-final').href = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+
+        } catch (err) {
+            console.error('Erro ao enviar:', err);
+            
+            // Reverte o estado visual para permitir nova tentativa
+            isSubmitting = false;
+            toggleFormState(false);
+            if (submitBtn) {
+                submitBtn.innerHTML = originalBtnHtml;
+            }
+            
+            const errName = err.name === 'AbortError' ? 'Timeout de conexão' : err.message;
+            alert(`Ocorreu um erro ao enviar sua solicitação (${errName}). Por favor, verifique sua internet e tente novamente.`);
+        }
+    });
+
+    // =========================================================================
+    // Máscaras Dinâmicas
+    // =========================================================================
+    const valorInput = document.getElementById('valor');
+    if (valorInput) {
+        valorInput.addEventListener('input', (e) => {
             let value = e.target.value.replace(/\D/g, '');
             if (!value) { e.target.value = ''; return; }
             value = (parseInt(value) / 100).toFixed(2);
@@ -404,117 +360,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const valorInput = document.getElementById('valor');
-    if (valorInput) applyCurrencyMask(valorInput);
-
-    // Validação de CPF
-    function validarCPF(cpf) {
-        cpf = cpf.replace(/[^\d]+/g,'');
-        if(cpf == '') return false;
-        if (cpf.length != 11 || 
-            /^(\d)\1{10}$/.test(cpf))
-                return false;
-        var add = 0;
-        for (var i=0; i < 9; i ++)
-            add += parseInt(cpf.charAt(i)) * (10 - i);
-        var rev = 11 - (add % 11);
-        if (rev == 10 || rev == 11) rev = 0;
-        if (rev != parseInt(cpf.charAt(9))) return false;
-        add = 0;
-        for (var i = 0; i < 10; i ++)
-            add += parseInt(cpf.charAt(i)) * (11 - i);
-        rev = 11 - (add % 11);
-        if (rev == 10 || rev == 11) rev = 0;
-        if (rev != parseInt(cpf.charAt(10))) return false;
-        return true;
-    }
-
-    const cpfInput = document.getElementById('cpf');
-    if (cpfInput) {
-        cpfInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.slice(0, 11);
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d)/, '$1.$2');
-            value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            e.target.value = value;
-            
-            const msgEl = document.getElementById('cpf-msg');
-            msgEl.style.display = 'none';
-            cpfInput.classList.remove('input-error');
-        });
-
-        cpfInput.addEventListener('blur', (e) => {
-            const rawValue = e.target.value.replace(/\D/g, '');
-            const msgEl = document.getElementById('cpf-msg');
-            
-            if (rawValue.length === 0) return;
-
-            if (validarCPF(rawValue)) {
-                cpfInput.classList.remove('input-error');
-                msgEl.textContent = 'CPF validado.';
-                msgEl.style.color = '#059669'; // success color
-                msgEl.style.display = 'block';
-            } else {
-                cpfInput.classList.add('input-error');
-                msgEl.textContent = 'Informe um CPF válido para continuar.';
-                msgEl.style.color = 'var(--danger)';
-                msgEl.style.display = 'block';
-            }
-        });
-    }
-
     const whatsappInput = document.getElementById('whatsapp');
+    const whatsappConf = document.getElementById('whatsapp-confirmation');
     if (whatsappInput) {
         whatsappInput.addEventListener('input', (e) => {
-            let x = e.target.value.replace(/\D/g, '').match(/(\d{0,2})(\d{0,5})(\d{0,4})/);
-            e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
-        });
-    }
-
-    const cepInput = document.getElementById('cep');
-    if (cepInput) {
-        cepInput.addEventListener('input', async (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 8) value = value.slice(0, 8);
-            e.target.value = value.replace(/(\d{5})(\d)/, '$1-$2');
+            let val = e.target.value.replace(/\D/g, '');
+            if (val.length > 11) val = val.slice(0, 11);
+            if (val.length === 0) { 
+                e.target.value = ''; 
+                if (whatsappConf) whatsappConf.style.display = 'none';
+                return; 
+            }
+            if (val.length <= 2) { 
+                e.target.value = `(${val}`; 
+                if (whatsappConf) whatsappConf.style.display = 'none';
+                return; 
+            }
+            if (val.length <= 7) { 
+                e.target.value = `(${val.slice(0, 2)}) ${val.slice(2)}`; 
+                if (whatsappConf) whatsappConf.style.display = 'none';
+                return; 
+            }
+            const formatted = `(${val.slice(0, 2)}) ${val.slice(2, 7)}-${val.slice(7)}`;
+            e.target.value = formatted;
             
-            if (value.length === 8) {
-                document.getElementById('cep-loading').style.display = 'inline-block';
-                document.getElementById('cep-error').style.display = 'none';
-                try {
-                    const res = await fetch(`https://viacep.com.br/ws/${value}/json/`);
-                    const data = await res.json();
-                    if (data.erro) {
-                        document.getElementById('cep-error').style.display = 'inline-block';
-                        document.getElementById('rua').value = '';
-                        document.getElementById('bairro').value = '';
-                        document.getElementById('cidade').value = '';
-                        document.getElementById('uf').value = '';
-                    } else {
-                        document.getElementById('rua').value = data.logradouro || '';
-                        document.getElementById('bairro').value = data.bairro || '';
-                        document.getElementById('cidade').value = data.localidade || '';
-                        document.getElementById('uf').value = data.uf || '';
-                        document.getElementById('numero').focus();
-                        
-                        // Limpa os erros desses campos se já estiverem preenchidos
-                        ['rua', 'bairro', 'cidade', 'uf'].forEach(id => {
-                            const el = document.getElementById(id);
-                            if (el && el.value) {
-                                el.classList.remove('input-error');
-                                const err = el.closest('.input-group').querySelector('.error-message');
-                                if (err) err.remove();
-                            }
-                        });
-                    }
-                } catch (err) {
-                    document.getElementById('cep-error').style.display = 'inline-block';
-                } finally {
-                    document.getElementById('cep-loading').style.display = 'none';
-                }
+            if (val.length >= 10 && whatsappConf) {
+                whatsappConf.textContent = `Entraremos em contato pelo número ${formatted}. Confira se está correto.`;
+                whatsappConf.style.display = 'block';
+            } else if (whatsappConf) {
+                whatsappConf.style.display = 'none';
             }
         });
     }
-
 });
