@@ -265,6 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const faixa_renda = getRadioValue('renda_media');
         const comprovacao_renda = document.getElementById('comprovante').value;
+        const tipo_vinculo = document.getElementById('tipo_vinculo').value;
         const tempo_renda = getRadioValue('tempo_renda');
         const consent = document.getElementById('consentimento').checked;
 
@@ -275,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
             bairro: bairro.slice(0, 100),
             valor_solicitado: valor,
             renda_mensal: rendaExata,
-            observacoes: '',
+            observacoes: `Perfil Profissional (Vínculo): ${tipo_vinculo}`,
             origem: pagina_origem.slice(0, 200),
             utm_source: utm_source ? utm_source.slice(0, 100) : null,
             utm_medium: utm_medium ? utm_medium.slice(0, 100) : null,

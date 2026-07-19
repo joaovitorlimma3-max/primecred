@@ -128,6 +128,10 @@ export default function LeadDetails() {
             <p style={{ fontWeight: 600, fontSize: '1.125rem', color: 'var(--primary-color)' }}>{formatCurrency(lead.valor_solicitado)}</p>
           </div>
           <div>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '4px' }}>Renda Mensal Exata</p>
+            <p style={{ fontWeight: 500 }}>{formatCurrency(lead.renda_mensal)}</p>
+          </div>
+          <div>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '4px' }}>Faixa de Renda Mensal</p>
             <p style={{ fontWeight: 500 }}>{lead.faixa_renda || '-'}</p>
           </div>
