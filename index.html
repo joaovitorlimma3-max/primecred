@@ -76,8 +76,21 @@
                             </div>
                             
                             <div class="input-group">
-                                <label for="finalidade">Finalidade do crédito</label>
-                                <input type="text" id="finalidade" name="finalidade" placeholder="Ex: Investir no negócio, quitar dívida..." required>
+                                <label for="renda">Sua renda mensal</label>
+                                <input type="tel" id="renda" name="renda" placeholder="Ex: R$ 3.000,00" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="comprovante">Como você comprova sua renda?</label>
+                                <select id="comprovante" name="comprovante" required style="width: 100%; padding: 14px 16px; font-size: 1rem; font-family: var(--font-primary); color: var(--text-color); background-color: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); transition: all 0.2s ease;">
+                                    <option value="" disabled selected>Selecione uma opção</option>
+                                    <option value="Holerite">Holerite</option>
+                                    <option value="Extrato bancário">Extrato bancário</option>
+                                    <option value="Movimentação de conta">Movimentação de conta</option>
+                                    <option value="Faturamento">Faturamento</option>
+                                    <option value="Imposto de Renda">Imposto de Renda</option>
+                                    <option value="Não possuo comprovante">Não possuo comprovante</option>
+                                </select>
                             </div>
 
                             <div class="input-group">
@@ -122,17 +135,7 @@
                                 </div>
                             </div>
 
-                            <div class="field-block">
-                                <label class="field-label">Como você comprova sua renda?</label>
-                                <div class="chip-group" data-name="comprovante">
-                                    <label class="chip"><input type="radio" name="comprovante" value="Holerite" required><span>Holerite</span></label>
-                                    <label class="chip"><input type="radio" name="comprovante" value="Extrato bancário"><span>Extrato bancário</span></label>
-                                    <label class="chip"><input type="radio" name="comprovante" value="Movimentação de conta"><span>Movimentação de conta</span></label>
-                                    <label class="chip"><input type="radio" name="comprovante" value="Faturamento"><span>Faturamento</span></label>
-                                    <label class="chip"><input type="radio" name="comprovante" value="Imposto de Renda"><span>Imposto de Renda</span></label>
-                                    <label class="chip"><input type="radio" name="comprovante" value="Não possuo comprovante"><span>Não possuo comprovante</span></label>
-                                </div>
-                            </div>
+
 
                             <div class="field-block">
                                 <label class="field-label">Há quanto tempo possui essa renda?</label>

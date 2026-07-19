@@ -254,14 +254,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const valorStr = document.getElementById('valor').value.replace(/\D/g, '');
         const valor = valorStr ? parseInt(valorStr) / 100 : 0;
-        const finalidade = document.getElementById('finalidade').value.trim();
+        
+        const rendaStr = document.getElementById('renda').value.replace(/\D/g, '');
+        const rendaExata = rendaStr ? parseInt(rendaStr) / 100 : 0;
+
         const nome = document.getElementById('nome').value.trim();
         const telefone = document.getElementById('whatsapp').value.replace(/\D/g, '');
         const cidade = document.getElementById('cidade').value.trim();
         const bairro = document.getElementById('bairro').value.trim();
         
         const faixa_renda = getRadioValue('renda_media');
-        const comprovacao_renda = getRadioValue('comprovante');
+        const comprovacao_renda = document.getElementById('comprovante').value;
         const tempo_renda = getRadioValue('tempo_renda');
         const consent = document.getElementById('consentimento').checked;
 
@@ -271,7 +274,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cidade: cidade.slice(0, 100),
             bairro: bairro.slice(0, 100),
             valor_solicitado: valor,
-            observacoes: `Finalidade: ${finalidade.slice(0, 200)}`,
+            renda_mensal: rendaExata,
+            observacoes: '',
             origem: pagina_origem.slice(0, 200),
             utm_source: utm_source ? utm_source.slice(0, 100) : null,
             utm_medium: utm_medium ? utm_medium.slice(0, 100) : null,
@@ -344,16 +348,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // Máscaras Dinâmicas
     // =========================================================================
+    const formatCurrency = (e) => {
+        let value = e.target.value.replace(/\D/g, '');
+        if (!value) { e.target.value = ''; return; }
+        value = (parseInt(value) / 100).toFixed(2);
+        value = value.replace('.', ',');
+        value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+        e.target.value = `R$ ${value}`;
+    };
+
     const valorInput = document.getElementById('valor');
     if (valorInput) {
-        valorInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, '');
-            if (!value) { e.target.value = ''; return; }
-            value = (parseInt(value) / 100).toFixed(2);
-            value = value.replace('.', ',');
-            value = value.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-            e.target.value = `R$ ${value}`;
-        });
+        valorInput.addEventListener('input', formatCurrency);
+    }
+    
+    const rendaInput = document.getElementById('renda');
+    if (rendaInput) {
+        rendaInput.addEventListener('input', formatCurrency);
     }
 
     const whatsappInput = document.getElementById('whatsapp');
