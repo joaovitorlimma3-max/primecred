@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PrimeCred - Pré-análise de Crédito</title>
+    <meta name="description" content="Faça sua pré-análise de crédito em menos de 1 minuto. Processo rápido, seguro e transparente.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Meta Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1341451128103141');
+    // PageView mantido no HTML puro
+    fbq('track', 'PageView');
+    </script>
+    <!-- End Meta Pixel Code -->
+</head>
+<body>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1341451128103141&ev=PageView&noscript=1" /></noscript>
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <div class="hero-text">
+                    <span class="hero-badge">Processo Seguro e Transparente</span>
+                    <h1>Pré-análise de crédito em menos de 1 minuto</h1>
+                    <p>Informe alguns dados básicos para verificarmos se o seu perfil pode seguir para análise. Sem taxa antecipada e sem envio de documentos nesta etapa.</p>
+                    <a href="#pre-analise" class="btn btn-primary btn-large btn-start-pre">Iniciar pré-análise <i class="ph ph-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Formulário (Movido para logo após o Hero) -->
+        <section id="pre-analise" class="simulator">
+            <div class="container">
+                <div class="form-wrapper">
+                    <div class="form-header">
+                        <h2>Sua Pré-análise</h2>
+                        <div class="trust-indicators-small" style="display: flex; gap: 12px; justify-content: center; font-size: 0.85rem; color: #666; margin-bottom: 24px; flex-wrap: wrap;">
+                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-check"></i> Sem cobrança antecipada</span>
+                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-lock-key"></i> Dados seguros</span>
+                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-whatsapp-logo"></i> Atendimento via WhatsApp</span>
+                        </div>
+                        
+                        <div class="progress-steps" style="grid-template-columns: 1fr 1fr;">
+                            <div class="pstep active" data-target="1"><span>1</span> Dados básicos</div>
+                            <div class="pstep" data-target="2"><span>2</span> Perfil financeiro</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress" id="progress" style="width: 50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <form id="simulation-form" novalidate>
+                        <!-- Step 1 — Dados Básicos -->
+                        <div class="form-step active" data-step="1">
+                            <div class="step-indicator-text" style="font-weight: 600; color: var(--primary-color); margin-bottom: 16px;">Etapa 1 de 2</div>
+                            
+                            <div class="input-group">
+                                <label for="valor">Valor desejado</label>
+                                <input type="tel" id="valor" name="valor" placeholder="Ex: R$ 5.000,00" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="nome">Nome completo</label>
+                                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="whatsapp">WhatsApp para contato</label>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">Confira o número com atenção. Nossa equipe entrará em contato por este WhatsApp.</p>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" required>
+                                <p id="whatsapp-confirmation" style="display: none; font-size: 0.85rem; color: var(--primary-color); font-weight: 500; margin-top: 8px;"></p>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label for="cidade">Cidade onde mora</label>
+                                <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo - SP" required>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="bairro">Bairro onde mora</label>
+                                <input type="text" id="bairro" name="bairro" placeholder="Ex: Centro" autocomplete="off" required>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="button" class="btn btn-primary btn-next btn-full">Próxima Etapa <i class="ph ph-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 — Perfil Financeiro e Simulação -->
+                        <div class="form-step" data-step="2">
+                            <div class="step-indicator-text" style="font-weight: 600; color: var(--primary-color); margin-bottom: 16px;">Etapa 2 de 2</div>
+                            
+                            <!-- Simulação Interativa -->
+                            <div class="simulation-card" id="simulation-box" style="display: none;">
+                                <h4><i class="ph ph-calculator"></i> Veja uma simulação</h4>
+                                
+                                <div class="simulation-values">
+                                    <div class="sim-item">
+                                        <span>Valor solicitado</span>
+                                        <strong id="sim-solicitado">R$ 0,00</strong>
+                                    </div>
+                                    <div class="sim-item highlight">
+                                        <span>Valor mensal</span>
+                                        <strong id="sim-mensal">R$ 0,00</strong>
+                                    </div>
+                                    <div class="sim-item">
+                                        <span>Valor para quitação</span>
+                                        <strong id="sim-quitacao">R$ 0,00</strong>
+                                    </div>
+                                </div>
+                                
+                                <p class="simulation-text">
+                                    Trabalhamos com valor mensal correspondente a 30% do crédito concedido. O pagamento mensal mantém o contrato em dia e não reduz o valor principal. Para quitação, são consideradas as condições apresentadas na proposta e formalizadas em contrato.
+                                </p>
+                                
+                                <div class="simulation-disclaimer">
+                                    Esta é uma simulação. A liberação e as condições estão sujeitas à análise.
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="renda">Renda Mensal</label>
+                                <input type="tel" id="renda" name="renda" placeholder="Ex: R$ 3.000,00" required>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Como você comprova sua renda?</label>
+                                <div class="chip-group" data-name="comprova_renda_pf">
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Sim"><span>Sim</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Não"><span>Não</span></label>
+                                </div>
+                            </div>
+
+                            <div class="input-group">
+                                <label for="perfil_profissional">Qual o seu perfil profissional?</label>
+                                <select id="perfil_profissional" name="perfil_profissional" required style="width: 100%; padding: 14px 16px; font-size: 1rem; font-family: var(--font-primary); color: var(--text-color); background-color: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); transition: all 0.2s ease;">
+                                    <option value="" disabled selected>Selecione uma opção</option>
+                                    <option value="CLT">CLT</option>
+                                    <option value="Autônomo">Autônomo</option>
+                                    <option value="Empresa / CNPJ">Empresa / CNPJ</option>
+                                </select>
+                            </div>
+
+                            <!-- BLOCO EMPRESA / CNPJ -->
+                            <div id="bloco_pj" style="display: none;">
+                                <div class="input-group">
+                                    <label for="cnpj">CNPJ</label>
+                                    <input type="tel" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="ramo_empresa">Ramo da empresa</label>
+                                    <input type="text" id="ramo_empresa" name="ramo_empresa" placeholder="Ex.: mercado, construção, loja de roupas, transportadora...">
+                                </div>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Há quanto tempo possui essa renda?</label>
+                                <div class="chip-group" data-name="tempo_renda_pf">
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="Menos de 3 meses"><span>Menos de 3 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="3 a 6 meses"><span>3 a 6 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="6 meses a 1 ano"><span>6 meses a 1 ano</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="Mais de 1 ano"><span>Mais de 1 ano</span></label>
+                                </div>
+                            </div>
+
+                            <div class="consent-box" style="margin: 24px 0; padding: 16px; background-color: #f8f9fa; border-radius: 8px;">
+                                <label class="checkbox-label" style="display: flex; gap: 12px; cursor: pointer;">
+                                    <input type="checkbox" id="consentimento" name="consentimento" required style="margin-top: 4px; width: 18px; height: 18px;">
+                                    <span style="font-size: 0.9rem; color: #555;">Autorizo o contato pelo WhatsApp e declaro que li a <a href="#" class="privacy-link" style="color: var(--primary-color); text-decoration: underline;">Política de Privacidade</a>.</span>
+                                </label>
+                            </div>
+
+                            <div class="form-actions row">
+                                <button type="button" class="btn btn-outline btn-prev">Voltar</button>
+                                <button type="submit" class="btn btn-primary btn-submit">Enviar para análise</button>
+                            </div>
+                        </div>
+
+                        <!-- Loading State -->
+                        <div class="form-loading" id="loading-step" style="display: none;">
+                            <div class="spinner"></div>
+                            <h3>Enviando suas informações...</h3>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div class="form-success" id="success-step" style="display: none;">
+                            <div class="success-icon"><i class="ph ph-check-circle"></i></div>
+                            <h3>Pré-análise enviada com sucesso!</h3>
+                            <p>Recebemos suas informações. Nossa equipe poderá entrar em contato pelo WhatsApp para confirmar alguns dados e explicar as próximas etapas.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Como Funciona Section -->
+        <section id="como-funciona" class="how-it-works">
+            <div class="container">
+                <div class="hiw-header">
+                    <span class="hiw-badge">COMO FUNCIONA</span>
+                    <div class="hiw-divider"></div>
+                    <h2>Seu crédito em poucos passos</h2>
+                    <p>Da pré-análise à contratação, desenvolvemos um processo simples e seguro para avaliar a melhor solução para cada cliente.</p>
+                </div>
+
+                <div class="hiw-steps-wrapper">
+                    <div class="hiw-connecting-line"></div>
+                    <div class="hiw-steps-grid">
+                        <div class="hiw-step-card">
+                            <div class="hiw-step-number">1</div>
+                            <div class="hiw-step-icon-wrapper"><i class="ph ph-clipboard-text hiw-icon"></i></div>
+                            <h4>Pré-análise Rápida</h4>
+                            <p>Você informa os dados iniciais sem compromisso ou custos.</p>
+                        </div>
+                        <div class="hiw-step-card">
+                            <div class="hiw-step-number">2</div>
+                            <div class="hiw-step-icon-wrapper"><i class="ph ph-chat-circle-dots hiw-icon"></i></div>
+                            <h4>Contato e Validação</h4>
+                            <p>Nossa equipe entra em contato para entender seu momento.</p>
+                        </div>
+                        <div class="hiw-step-card">
+                            <div class="hiw-step-number">3</div>
+                            <div class="hiw-step-icon-wrapper"><i class="ph ph-shield-check hiw-icon"></i></div>
+                            <h4>Proposta</h4>
+                            <p>Sendo aprovado o perfil, você recebe as condições estruturadas.</p>
+                        </div>
+                        <div class="hiw-step-card">
+                            <div class="hiw-step-number">4</div>
+                            <div class="hiw-step-icon-wrapper"><i class="ph ph-file-text hiw-icon"></i></div>
+                            <h4>Formalização</h4>
+                            <p>Contratação segura e documentada.</p>
+                        </div>
+                        <div class="hiw-step-card">
+                            <div class="hiw-step-number">5</div>
+                            <div class="hiw-step-icon-wrapper"><i class="ph ph-trend-up hiw-icon"></i></div>
+                            <h4>Liberação</h4>
+                            <p>Os recursos são liberados conforme acordado no contrato.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Para Quem É Section -->
+        <section class="para-quem-e">
+            <div class="container">
+                <div class="pqe-header">
+                    <span class="pqe-badge">PERFIS ATENDIDOS</span>
+                    <h2>Soluções para diferentes objetivos</h2>
+                </div>
+                <div class="pqe-cards">
+                    <div class="pqe-card">
+                        <div class="pqe-icon"><i class="ph ph-briefcase"></i></div>
+                        <h4>Empresários</h4>
+                        <p>Capital para expandir negócios e organizar finanças.</p>
+                    </div>
+                    <div class="pqe-card">
+                        <div class="pqe-icon"><i class="ph ph-chart-line-up"></i></div>
+                        <h4>Investidores</h4>
+                        <p>Recursos para oportunidades e novos projetos.</p>
+                    </div>
+                    <div class="pqe-card">
+                        <div class="pqe-icon"><i class="ph ph-user-focus"></i></div>
+                        <h4>Profissionais Liberais</h4>
+                        <p>Investimento na carreira e infraestrutura.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Análise Personalizada Section -->
+        <section class="cta-analysis">
+            <div class="container">
+                <div class="cta-analysis-header">
+                    <h2>Descubra as opções para o seu perfil</h2>
+                </div>
+                <div class="cta-analysis-action">
+                    <a href="#pre-analise" class="btn btn-primary btn-large btn-start-pre">Verificar meu perfil <i class="ph ph-arrow-right"></i></a>
+                </div>
+                <div class="cta-disclaimer">
+                    <div class="cta-disclaimer-inner">
+                        <i class="ph ph-info"></i>
+                        <div>
+                            <strong>Importante</strong>
+                            <p>O envio da solicitação não representa aprovação ou contratação. Todas as solicitações passam por análise rigorosa antes de qualquer proposta.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Security Section -->
+        <section class="security">
+            <div class="container">
+                <div class="security-card">
+                    <div class="security-content">
+                        <h2>Segurança e Privacidade</h2>
+                        <ul class="security-list">
+                            <li><i class="ph ph-shield-check"></i> Ambiente Protegido</li>
+                            <li><i class="ph ph-lock-key"></i> Dados Criptografados</li>
+                            <li><i class="ph ph-eye-slash"></i> Sigilo Absoluto</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section id="faq" class="faq">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Perguntas Frequentes</h2>
+                </div>
+                <div class="accordion">
+                    <div class="accordion-item">
+                        <button class="accordion-header">O preenchimento tem custo? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content"><p>Não. A solicitação é totalmente gratuita.</p></div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">A aprovação é garantida? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content"><p>Não. Cada caso é avaliado individualmente conforme nossas políticas de crédito.</p></div>
+                    </div>
+                    <div class="accordion-item">
+                        <button class="accordion-header">Preciso enviar documentos na pré-análise? <i class="ph ph-caret-down"></i></button>
+                        <div class="accordion-content"><p>Não. Se houver viabilidade para continuar, a equipe pedirá a documentação posteriormente.</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo footer-logo">
+                    <img src="logo.png" alt="PrimeCred" class="logo-img footer-logo-img">
+                </a>
+                <p>Soluções de crédito avaliadas com responsabilidade.</p>
+            </div>
+            <div class="footer-links">
+                <h4>Navegação</h4>
+                <ul>
+                    <li><a href="#como-funciona">Como Funciona</a></li>
+                    <li><a href="#faq">Dúvidas</a></li>
+                    <li><a href="#">Política de Privacidade</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p>&copy; 2026 PrimeCred. Todos os direitos reservados.</p>
+                <p class="disclaimer">Sujeito à análise de crédito e disponibilidade.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>

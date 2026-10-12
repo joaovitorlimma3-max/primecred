@@ -22,14 +22,14 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1533044175037797');
+    fbq('init', '1341451128103141');
     // PageView mantido no HTML puro
     fbq('track', 'PageView');
     </script>
     <!-- End Meta Pixel Code -->
 </head>
 <body>
-    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1533044175037797&ev=PageView&noscript=1" /></noscript>
+    <noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=1341451128103141&ev=PageView&noscript=1" /></noscript>
     <main>
         <!-- Hero Section -->
         <section class="hero">
@@ -49,117 +49,185 @@
             <div class="container">
                 <div class="form-wrapper">
                     <div class="form-header">
-                        <h2>Sua Pré-análise</h2>
-                        <div class="trust-indicators-small" style="display: flex; gap: 12px; justify-content: center; font-size: 0.85rem; color: #666; margin-bottom: 24px; flex-wrap: wrap;">
-                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-check"></i> Sem cobrança antecipada</span>
-                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-lock-key"></i> Dados seguros</span>
-                            <span style="display: flex; align-items: center; gap: 4px;"><i class="ph ph-whatsapp-logo"></i> Atendimento via WhatsApp</span>
-                        </div>
+                        <h2 style="font-size: 1.8rem; margin-bottom: 8px;">Veja se seu perfil pode seguir para análise</h2>
+                        <p style="text-align: center; color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;">Leva menos de 1 minuto &bull; Sem envio de documentos agora</p>
                         
                         <div class="progress-steps" style="grid-template-columns: 1fr 1fr;">
-                            <div class="pstep active" data-target="1"><span>1</span> Dados básicos</div>
-                            <div class="pstep" data-target="2"><span>2</span> Perfil financeiro</div>
+                            <div class="pstep active" data-target="1"><span>1</span> Perfil financeiro</div>
+                            <div class="pstep" data-target="2"><span>2</span> Contato</div>
                         </div>
                         <div class="progress-bar">
-                            <div class="progress" id="progress"></div>
+                            <div class="progress" id="progress" style="width: 50%;"></div>
                         </div>
                     </div>
                     
-                    <form id="simulation-form">
-                        <!-- Step 1 — Dados Básicos -->
+                    <form id="simulation-form" novalidate>
+                        <!-- Step 1 — Perfil Financeiro -->
                         <div class="form-step active" data-step="1">
                             <div class="step-indicator-text" style="font-weight: 600; color: var(--primary-color); margin-bottom: 16px;">Etapa 1 de 2</div>
                             
                             <div class="input-group">
-                                <label for="valor">Valor desejado</label>
+                                <label for="valor">Quanto você precisa?</label>
                                 <input type="tel" id="valor" name="valor" placeholder="Ex: R$ 5.000,00" required>
                             </div>
-                            
-                            <div class="input-group">
-                                <label for="renda">Sua renda mensal</label>
-                                <input type="tel" id="renda" name="renda" placeholder="Ex: R$ 3.000,00" required>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="comprovante">Como você comprova sua renda?</label>
-                                <select id="comprovante" name="comprovante" required style="width: 100%; padding: 14px 16px; font-size: 1rem; font-family: var(--font-primary); color: var(--text-color); background-color: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); transition: all 0.2s ease;">
-                                    <option value="" disabled selected>Selecione uma opção</option>
-                                    <option value="Holerite">Holerite</option>
-                                    <option value="Extrato bancário">Extrato bancário</option>
-                                    <option value="Movimentação de conta">Movimentação de conta</option>
-                                    <option value="Faturamento">Faturamento</option>
-                                    <option value="Imposto de Renda">Imposto de Renda</option>
-                                    <option value="Não possuo comprovante">Não possuo comprovante</option>
-                                </select>
-                            </div>
-                            
-                            <div class="input-group">
-                                <label for="tipo_vinculo">Qual o seu perfil profissional?</label>
-                                <select id="tipo_vinculo" name="tipo_vinculo" required style="width: 100%; padding: 14px 16px; font-size: 1rem; font-family: var(--font-primary); color: var(--text-color); background-color: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); transition: all 0.2s ease;">
-                                    <option value="" disabled selected>Selecione uma opção</option>
-                                    <option value="CLT">CLT (Carteira Assinada)</option>
-                                    <option value="CNPJ">CNPJ (Empresário / MEI)</option>
-                                    <option value="Funcionário Público">Funcionário Público</option>
-                                    <option value="Aposentado/Pensionista">Aposentado / Pensionista</option>
-                                    <option value="Autônomo/Sem Vínculo">Autônomo / Sem Vínculo</option>
-                                </select>
+
+                            <div class="field-block">
+                                <label class="field-label">Qual é o seu perfil profissional?</label>
+                                <div class="choice-grid" id="perfil-grid">
+                                    <label class="choice-card">
+                                        <input type="radio" name="perfil_profissional" value="CLT">
+                                        <div class="choice-content">
+                                            <i class="ph ph-briefcase"></i>
+                                            <span>CLT</span>
+                                        </div>
+                                    </label>
+                                    <label class="choice-card">
+                                        <input type="radio" name="perfil_profissional" value="Autônomo">
+                                        <div class="choice-content">
+                                            <i class="ph ph-user-gear"></i>
+                                            <span>Autônomo</span>
+                                        </div>
+                                    </label>
+                                    <label class="choice-card">
+                                        <input type="radio" name="perfil_profissional" value="Empresário / CNPJ">
+                                        <div class="choice-content">
+                                            <i class="ph ph-storefront"></i>
+                                            <span>Empresário / CNPJ</span>
+                                        </div>
+                                    </label>
+                                    <label class="choice-card">
+                                        <input type="radio" name="perfil_profissional" value="Profissional Liberal">
+                                        <div class="choice-content">
+                                            <i class="ph ph-student"></i>
+                                            <span>Prof. Liberal</span>
+                                        </div>
+                                    </label>
+                                    <label class="choice-card">
+                                        <input type="radio" name="perfil_profissional" value="Outro">
+                                        <div class="choice-content">
+                                            <i class="ph ph-dots-three"></i>
+                                            <span>Outro</span>
+                                        </div>
+                                    </label>
+                                </div>
                             </div>
 
+                            <div class="input-group">
+                                <label for="renda">Qual sua renda média mensal?</label>
+                                <input type="tel" id="renda" name="renda" placeholder="Ex: R$ 3.500,00" required>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Há quanto tempo você possui essa renda ou atividade?</label>
+                                <div class="chip-group" data-name="tempo_renda_pf">
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="Menos de 3 meses"><span>Menos de 3 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="3 a 6 meses"><span>3 a 6 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="6 a 12 meses"><span>6 a 12 meses</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="1 a 2 anos"><span>1 a 2 anos</span></label>
+                                    <label class="chip"><input type="radio" name="tempo_renda_pf" value="Mais de 2 anos"><span>Mais de 2 anos</span></label>
+                                </div>
+                            </div>
+
+                            <div class="field-block">
+                                <label class="field-label">Como consegue comprovar sua renda?</label>
+                                <div class="chip-group" data-name="comprova_renda_pf">
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Extrato bancário"><span>Extrato bancário</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Holerite"><span>Holerite</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Pró-labore"><span>Pró-labore</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Notas fiscais"><span>Notas fiscais</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Declaração / IR"><span>Declaração / IR</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Movimentação empresarial"><span>Moviment. empresarial</span></label>
+                                    <label class="chip"><input type="radio" name="comprova_renda_pf" value="Outro"><span>Outro</span></label>
+                                </div>
+                            </div>
+
+                            <!-- BLOCOS CONDICIONAIS -->
+                            <div id="cond_clt" class="conditional-block" style="display: none;">
+                                <div class="field-block">
+                                    <label class="field-label">Há quanto tempo está no emprego atual?</label>
+                                    <div class="chip-group" data-name="tempo_emprego_clt">
+                                        <label class="chip"><input type="radio" name="tempo_emprego_clt" value="Menos de 3 meses"><span>Menos de 3 meses</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_emprego_clt" value="3–6 meses"><span>3–6 meses</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_emprego_clt" value="6–12 meses"><span>6–12 meses</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_emprego_clt" value="1–2 anos"><span>1–2 anos</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_emprego_clt" value="Mais de 2 anos"><span>Mais de 2 anos</span></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="cond_autonomo" class="conditional-block" style="display: none;">
+                                <div class="input-group">
+                                    <label for="atividade_autonomo">Qual sua atividade?</label>
+                                    <input type="text" id="atividade_autonomo" name="atividade_autonomo" placeholder="Ex.: motorista, vendas, construção, estética...">
+                                </div>
+                                <div class="input-group">
+                                    <label for="movimentacao_autonomo">Quanto aproximadamente movimenta por mês?</label>
+                                    <input type="tel" id="movimentacao_autonomo" name="movimentacao_autonomo" placeholder="Ex: R$ 4.000,00">
+                                </div>
+                            </div>
+
+                            <div id="cond_pj" class="conditional-block" style="display: none;">
+                                <div class="field-block">
+                                    <label class="field-label">Qual o faturamento médio mensal do negócio?</label>
+                                    <div class="chip-group" data-name="faturamento_pj">
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="Até R$ 3 mil"><span>Até R$ 3 mil</span></label>
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="R$ 3 mil a R$ 5 mil"><span>R$ 3 mil a R$ 5 mil</span></label>
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="R$ 5 mil a R$ 10 mil"><span>R$ 5 mil a R$ 10 mil</span></label>
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="R$ 10 mil a R$ 20 mil"><span>R$ 10 mil a R$ 20 mil</span></label>
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="R$ 20 mil a R$ 50 mil"><span>R$ 20 mil a R$ 50 mil</span></label>
+                                        <label class="chip"><input type="radio" name="faturamento_pj" value="Acima de R$ 50 mil"><span>Acima de R$ 50 mil</span></label>
+                                    </div>
+                                </div>
+                                <div class="field-block">
+                                    <label class="field-label">Há quanto tempo o negócio está funcionando?</label>
+                                    <div class="chip-group" data-name="tempo_pj">
+                                        <label class="chip"><input type="radio" name="tempo_pj" value="Menos de 6 meses"><span>Menos de 6 meses</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_pj" value="6–12 meses"><span>6–12 meses</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_pj" value="1–2 anos"><span>1–2 anos</span></label>
+                                        <label class="chip"><input type="radio" name="tempo_pj" value="Mais de 2 anos"><span>Mais de 2 anos</span></label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="cond_liberal" class="conditional-block" style="display: none;">
+                                <div class="input-group">
+                                    <label for="atividade_liberal">Qual sua profissão ou atividade?</label>
+                                    <input type="text" id="atividade_liberal" name="atividade_liberal" placeholder="Ex.: dentista, advogado, arquiteto...">
+                                </div>
+                                <div class="input-group">
+                                    <label for="movimentacao_liberal">Qual sua movimentação média mensal?</label>
+                                    <input type="tel" id="movimentacao_liberal" name="movimentacao_liberal" placeholder="Ex: R$ 6.000,00">
+                                </div>
+                            </div>
+                            
+                            <div class="form-actions row">
+                                <button type="button" class="btn btn-primary btn-next btn-full">Continuar análise <i class="ph ph-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2 — Contato -->
+                        <div class="form-step" data-step="2">
+                            <div class="step-indicator-text" style="font-weight: 600; color: var(--primary-color); margin-bottom: 16px;">Etapa 2 de 2</div>
+                            
                             <div class="input-group">
                                 <label for="nome">Nome completo</label>
                                 <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
                             </div>
                             
                             <div class="input-group">
-                                <label for="whatsapp">WhatsApp para contato</label>
-                                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 8px;">Confira o número com atenção. Nossa equipe entrará em contato por este WhatsApp.</p>
+                                <label for="whatsapp">WhatsApp</label>
                                 <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" required>
-                                <p id="whatsapp-confirmation" style="display: none; font-size: 0.85rem; color: var(--primary-color); font-weight: 500; margin-top: 8px;"></p>
                             </div>
                             
                             <div class="input-group">
-                                <label for="cidade">Cidade onde mora</label>
+                                <label for="cidade">Cidade</label>
                                 <input type="text" id="cidade" name="cidade" placeholder="Ex: São Paulo - SP" required>
                             </div>
 
                             <div class="input-group">
-                                <label for="bairro">Bairro onde mora</label>
+                                <label for="bairro">Bairro</label>
                                 <input type="text" id="bairro" name="bairro" placeholder="Ex: Centro" autocomplete="off" required>
                             </div>
-
-                            <div class="form-actions">
-                                <button type="button" class="btn btn-primary btn-next btn-full">Continuar pré-análise <i class="ph ph-arrow-right"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Step 2 — Perfil Financeiro -->
-                        <div class="form-step" data-step="2">
-                            <div class="step-indicator-text" style="font-weight: 600; color: var(--primary-color); margin-bottom: 16px;">Etapa 2 de 2</div>
-                            
-                            <div class="field-block">
-                                <label class="field-label">Faixa de renda mensal</label>
-                                <div class="chip-group" data-name="renda_media">
-                                    <label class="chip"><input type="radio" name="renda_media" value="Até R$ 2.000" required><span>Até R$ 2.000</span></label>
-                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 2.001 a R$ 3.500"><span>De R$ 2.001 a R$ 3.500</span></label>
-                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 3.501 a R$ 5.000"><span>De R$ 3.501 a R$ 5.000</span></label>
-                                    <label class="chip"><input type="radio" name="renda_media" value="De R$ 5.001 a R$ 8.000"><span>De R$ 5.001 a R$ 8.000</span></label>
-                                    <label class="chip"><input type="radio" name="renda_media" value="Acima de R$ 8.000"><span>Acima de R$ 8.000</span></label>
-                                </div>
-                            </div>
-
-
-
-                            <div class="field-block">
-                                <label class="field-label">Há quanto tempo possui essa renda?</label>
-                                <div class="chip-group" data-name="tempo_renda">
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="Menos de 3 meses" required><span>Menos de 3 meses</span></label>
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="De 3 a 6 meses"><span>De 3 a 6 meses</span></label>
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="De 6 meses a 1 ano"><span>De 6 meses a 1 ano</span></label>
-                                    <label class="chip"><input type="radio" name="tempo_renda" value="Mais de 1 ano"><span>Mais de 1 ano</span></label>
-                                </div>
-                            </div>
-
-
 
                             <div class="consent-box" style="margin: 24px 0; padding: 16px; background-color: #f8f9fa; border-radius: 8px;">
                                 <label class="checkbox-label" style="display: flex; gap: 12px; cursor: pointer;">
@@ -167,7 +235,7 @@
                                     <span style="font-size: 0.9rem; color: #555;">Autorizo o contato pelo WhatsApp e declaro que li a <a href="#" class="privacy-link" style="color: var(--primary-color); text-decoration: underline;">Política de Privacidade</a>.</span>
                                 </label>
                             </div>
-
+                            
                             <div class="form-actions row">
                                 <button type="button" class="btn btn-outline btn-prev">Voltar</button>
                                 <button type="submit" class="btn btn-primary btn-submit">Enviar para análise</button>
@@ -185,8 +253,6 @@
                             <div class="success-icon"><i class="ph ph-check-circle"></i></div>
                             <h3>Pré-análise enviada com sucesso!</h3>
                             <p>Recebemos suas informações. Nossa equipe poderá entrar em contato pelo WhatsApp para confirmar alguns dados e explicar as próximas etapas.</p>
-                            
-
                         </div>
                     </form>
                 </div>
